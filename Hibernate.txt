@@ -1,0 +1,93 @@
+@OneToOne
+@JoinColumn(name="ipc_ip_id", nullable=false, unique=true)
+private ImportProductEntity importProduct;
+
+@ManyToOne(fetch = FetchType.LAZY)
+@JoinColumn(name="order_item_order_id", nullable=false)
+private OrderEntity order;
+
+@OneToMany(mappedBy="order", fetch= FetchType.LAZY)
+private Set<OrderItemEntity> items;
+
+@ManyToMany
+@JoinTable(name="menu_item_to_import_product",
+        joinColumns=@JoinColumn(name="mitip_mi_id", referencedColumnName="mi_id"),
+        inverseJoinColumns=@JoinColumn(name="mitip_ip_id", referencedColumnName="ip_id"))
+private List<ImportProductEntity> importProducts;
+
+===================================================================================
+
+Question 1: Hibernate中get和load有什么不同之处?
+1. Hibernate get方法，Hibernate会确认一下该id对应的数据是否存在，首先在session缓存中查找，然后在二级缓存中查找，还没有就查询数据库，数据 库中没有就返回null。这个相对比较简单，也没有太大的争议。主要要说明的一点就是在这个版本(bibernate3.2以上)中get方法也会查找二级缓存！
+2. Hibernate load方法加载实体对象的时候，根据映射文件上类级别的lazy属性的配置(默认为true)，分情况讨论：
+(1)若为true,则首先在Session缓存中查找，看看该id对应的对象是否存在，不存在则使用延迟加载，返回实体的代理类对象(该代理类为实体类的子类，由CGLIB动态生成)。等到具体使用该对象(除获取OID以外)的时候，再查询二级缓存和数据库，若仍没发现符合条件的记录，则会抛出一个ObjectNotFoundException。
+(2)若为false,就跟Hibernateget方法查找顺序一样，只是最终若没发现符合条件的记录，则会抛出一个ObjectNotFoundException。
+
+
+
+Question 2: Hibernate的缓存机制
+. 内部缓存存在Hibernate中又叫一级缓存，属于应用事物级缓存
+. 二级缓存：
+a) 应用及缓存
+b) 分布式缓存
+
+Question 3: persist和save的区别
+===> 返回值不一样， persist 返回 void, save 返回 Serializable
+===> persist() method doesn't guarantee that the identifier value will be assigned to the persistent instance immediately, the assignment might happen at flush time.
+
+Question 4: commit 和flush区别
+commit会先调用flash执行session清理，然后提交事物；
+flash执行session，但不一定提交事物(因为事物可能被委托给外围的aop代理来做);
+
+Question 5: The Hibernate lifecycle contains the following states:
+====================================================================================================================
+Transient state
+===> The transient state is the initial state of an object.
+===> Here, an object is not associated with the Session. So, the transient state is not related to any database.
+===> The transient objects exist in the heap memory. They are independent of Hibernate.
+====================================================================================================================
+
+
+
+====================================================================================================================
+Persistent state
+===> As soon as the object associated with the Session, it entered in the persistent state.
+===> Here, each object represents the row of the database table.
+===> modifications in the data make changes in the database.
+====================================================================================================================
+
+====================================================================================================================
+Detached state
+===> Once we either close the session or clear its cache, then the object entered into the detached state.
+===> However, the detached object still has a representation in the database.
+====================================================================================================================
+
+Question 6: Hibernate中的SessionFactory有什么作用? SessionFactory是线程安全的吗？
+SessionFactory就是一个用于创建Hibernate的Session对象的工厂。SessionFactory通常是在应用启动时创建好的，应用程序中的代码用它来获得Session对象。
+作为一个单个的数据存储，它也是 线程安全的，所以多个线程可同时使用同一个SessionFactory。
+Java JEE应用一般只有一个SessionFactory，服务于客户请求的各线程都通过这个工厂来获得Hibernate的Session实例，这也是为什么SessionFactory接口的实现必须是线程安全的原因。
+还有，SessionFactory的内部状态包含着同对象关系影射有关的所有元数据，它是 不可变的，一旦创建好后就不能对其进行修改了。
+
+===================================================================================================================
+
+Question 7: Hibernate 中getCurrentSession() 和 openSession() 的区别 ?
+①. getCurrentSession() 它会先查看当前线程中是否绑定了 Session, 如果有则直接返回, 如果没有再创建. 而openSession() 则是直接 new 一个新的 Session 并返回。
+②. 使用ThreadLocal 来实现线程 Session 的隔离。
+③. getCurrentSession() 在事务提交的时候会自动关闭 Session, 而 openSession() 需要手动关闭.
+
+
+
+Fetching Strategies
+There are four fetching strategies
+1. fetch-“join” = Disable the lazy loading, always load all the collections and entities.
+2. fetch-“select” (default) = Lazy load all the collections and entities.
+3. batch-size=”N” = Fetching up to ‘N’ collections or entities, *Not record*.
+4. fetch-“subselect” = Group its collection into a sub select statement.
+
+
+
+
+An immutable entity may not be updated by the application. Updates to an immutable entity will be ignored, but no exception is thrown. 
+@Immutable must be used on root entities only.
+@Immutable placed on a collection makes the collection immutable, meaning additions and deletions to and from the collection are not allowed. 
+A HibernateException is thrown in this case.

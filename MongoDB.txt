@@ -1,0 +1,111 @@
+Install
+=======================================================
+wget -qO - https://www.mongodb.org/static/pgp/server-4.4.asc | sudo apt-key add -
+echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/4.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.4.list
+sudo apt-get update
+sudo apt-get install -y mongodb-org
+=======================================================
+
+sudo systemctl start mongod
+sudo systemctl daemon-reload
+sudo systemctl status mongod
+
+sudo systemctl enable mongod
+sudo systemctl stop mongod
+sudo systemctl restart mongod
+
+
+
+Uninstall MongoDB Community Edition
+=======================================================
+sudo service mongod stop
+sudo apt-get purge mongodb-org*
+
+sudo rm -r /var/log/mongodb
+sudo rm -r /var/lib/mongodb
+=======================================================
+
+
+
+
+基础：
+切换数据库
+use dbXXXX ===> 如果该数据库不存在，就创建一个
+
+数据库里面collection 就是 table, 以下是创建或者增加一个叫 people 的collection的记录
+db.people.insert({name:"yanyan", age:41, status: false})
+
+CRUD
+=======================================================
+
+db.[collection-name].insertOne()
+db.[collection-name].insertMany()
+db.[collection-name].insert()
+
+db.[collection-name].deleteMany()
+db.[collection-name].deleteOne()
+
+db.[collection-name].drop()#drop the whole collection
+
+db.collection.updateOne(<filter>, <update>, <options>)
+db.collection.updateMany(<filter>, <update>, <options>)
+db.collection.replaceOne(<filter>, <update>, <options>)
+
+
+=======================================================
+
+其他各种命令 MongoDB 可以想 sum, count 那样运行函数
+=======================================================
+假设:
+db.orders.insert([
+	{ _id: 1, cust_id: "abc1", ord_date: ISODate("2012-11-02T17:04:11.102Z"), status: "A", amount: 50 },
+	{ _id: 2, cust_id: "xyz1", ord_date: ISODate("2013-10-01T17:04:11.102Z"), status: "A", amount: 100 },
+	{ _id: 3, cust_id: "xyz1", ord_date: ISODate("2013-10-12T17:04:11.102Z"), status: "D", amount: 25 },
+	{ _id: 4, cust_id: "xyz1", ord_date: ISODate("2013-10-11T17:04:11.102Z"), status: "D", amount: 125 },
+	{ _id: 5, cust_id: "abc1", ord_date: ISODate("2013-11-12T17:04:11.102Z"), status: "A", amount: 25 }
+])
+
+db.orders.aggregate([
+                     { $match: { status: "A" } },
+                     { $group: { _id: "$cust_id", total: { $sum: "$amount" } } },
+                     { $sort: { total: -1 } }
+                   ])
+
+结果就是
+{ "_id" : "xyz1", "total" : 100 }
+{ "_id" : "abc1", "total" : 75 }
+
+=======================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

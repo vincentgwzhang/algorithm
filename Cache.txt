@@ -1,0 +1,44 @@
+LRU是Least Recently Used => 最近最少使用
+基本思想：如果数据最近被访问过，那么将来被访问的几率也更高。
+
+
+
+LFU是Least Frequency Used => 最不经常使用算法
+基本思想：如果数据过去被访问多次，那么将来被访问的频率也更高。
+缺点   ：无法对一个拥有最初高访问率之后长时间没有被访问的条目缓存负责。
+
+
+LRU的淘汰规则是基于访问时间 (放置时间越久，而没有用过的，首先删除)
+LFU的淘汰规则是基于访问次数 (不管放置时间，最少用过的，首先删除)
+
+假设缓存大小为3，数据访问序列为set(2,2),set(1,1),get(2),get(1),get(2),set(3,3),set(4,4)，
+在set(4,4)时对于
+    LFU算法应该淘汰(3,3)，
+    LRU算法应该淘汰(1,1)。
+
+
+https://www.pixelstech.net/article/1586522853-What-is-cache-penetration-cache-breakdown-and-cache-avalanche
+============================================================================
+1 缓存穿透 (cache penetration)
+Cache penetration is a scenario where the data to be searched doesn't exist at DB and the returned empty result set is not cached as well and
+hence every search for the key will hit the DB eventually.
+缓存穿透是由某些特殊请求持续访问系统不存在的key，直接加载到db，导致db压力上升，从而影响正常业务的现象。
+
+2 缓存击穿 (Cache breakdown)
+Cache breakdown is a scenario where the cached data expires and
+at the same time there are lots of search on the expired data
+which suddenly cause the searches to hit DB directly and increase the load to the DB layer dramatically.
+在平常高并发的系统中，大量的请求同时查询一个 key 时，此时这个key正好失效了，就会导致大量的请求都打到数据库上面去。这种现象我们称为缓存击穿。
+
+3 缓存雪崩 (Cache avalanche)
+缓存失效是由于大量key同时过期，请求直接从db加载导致db压力明显上升的问题。
+缓存失效的问题主要是因为大量key有相同的过期时间导致，所以可以通过设计缓存过期时间，如过期时间 = base时间 + 随机时间让数据在未来一段时间内慢慢过期，避免瞬时同时过期。
+缓存雪崩的情况是说，当某一时刻发生大规模的缓存失效的情况，比如你的缓存服务宕机了，会有大量的请求进来直接打到DB上面。结果就是DB 称不住，挂掉。
+
+    3.1 Cache avalanche is a scenario where lots of cached data expire at the same time or
+    3.2 the cache service is down and all of a sudden all searches of these data will hit DB and cause high load to the DB layer and impact the performance.
+
+Solution:
+    3.1 Using clusters
+    3.2 Some other approaches like hystrix circuit breaker
+    3.3 Can adjust the expiration time for different keys so that they will not expire at the same time.

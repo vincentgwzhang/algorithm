@@ -1,0 +1,83 @@
+Spring事务失效的 8 大原因:
+1) 数据库引擎不支持事务 for example, MyISAM (InnoDB 才是支持事务的引擎，一般要支持事务都会使用 InnoDB)
+-----------------------------------------------------------------------------------------
+属于自己写的程序级别的
+1) 方法不是 public 的
+2) 发生了自身调用
+4) 不支持事务
+5) 异常被吃了
+6) 异常抛出类型不对
+-----------------------------------------------------------------------------------------
+属于框架级别的
+2) 没有被 Spring 管理
+5) 没有配置事务管理器
+#########################################################################################
+
+[事务隔离级别]由低往高
+1) READ UNCOMMITTED
+级别:能够读取未提交的数据
+缺点：本身就是不安全的，因为别的线程随时回滚 （脏读问题Dirty reads）
+
+2) READ COMMITTED
+级别:读取已提交的数据。
+缺点：允许不可重复读取(Non-repeatable reads)，但不允许脏读取。这可以通过“瞬间共享读锁”和“排他写锁”实现。
+读取数据的事务允许其他事务继续访问该行数据，但是未提交的写事务将会禁止其他事务访问该行。
+
+3) REPEATABLE READ
+级别:可重复读取数据
+缺点：其实是加了record lock, 这样别的线程就不能更新有 record lock 的数据, 但不能解决幻读的问题
+
+解决幻读的方法是增加 Gap Lock, 范围锁，这样就避免了幻读。[Phantom reads]
+
+4）SERIALIZABLE
+级别：可串行化读。
+缺点：效率最低最耗费资源的一个事务级别
+
+
+MySQL默认是REPEATABLE_READ。
+#########################################################################################
+
+[事务传播机制]
+- REQUIRED
+如果当前方法有事务则加入事务，没有则创建一个事务。
+
+* NOT_SUPPORTED
+不支持事务，如果当前有事务则挂起事务运行。
+
+* REQUIREDS_NEW
+新建一个事务并在这个事务中运行，如果当前存在事务就把当前事务挂起。
+新建的事务的提交与回滚一挂起事务没有联系，不会影响挂起事务的操作。
+
+* MANDATORY
+强制当前方法使用事务运行，如果当前没有事务则抛出异常。
+
+* NEVER
+当前方法不能存在事务，即非事务状态运行，如果存在事务则抛出异常。
+
+* SUPPORTS
+支持当前事务，如果当前没事务也支持非事务状态运行。
+
+* NESTED
+如果当前存在事务，则在嵌套事务内执行。
+嵌套事务的提交与回滚与父事务没有任务关系
+当父事务提交嵌套事务也一起提交，父事务回滚会也回滚嵌套事务的
+
+
+
+@Pointcut("within(tina.coffee.webmvc.*.*)")
+private void isMVCMethod() {}
+
+@Pointcut("execution(* tina.coffee.webmvc.*.*(..))")
+private void anyPublicOperation() {}
+
+@Pointcut("@annotation(org.springframework.web.bind.annotation.GetMapping) || @annotation(org.springframework.web.bind.annotation.PostMapping))
+private void containMappingAnnotation() {}
+
+@Before("anyPublicOperation()")
+public void doAccessCheck(JoinPoint jp) {}
+
+事务的特征： ACID
+原子性 (Atomicity) 要么全部成功要么全部失败
+一致性（Consistency）数据一致性，用银行帐号来说
+隔离性 (Isolation) 每个事务之间相互独立不影响
+持久性（Durability）一旦完成，永久保存

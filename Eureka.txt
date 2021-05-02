@@ -1,0 +1,18 @@
+Q:怎么解决Eureka某一个服务挂掉的问题？
+A:
+1, 如果你的eureka客户端是是一个spring boot应用，可以通过调用以下代码通知注册中心下线。
+DiscoveryManager.getInstance().shutdownComponent();
+
+2, eureka.server.eviction-interval-timer-in-ms改小，默认60秒
+
+3, 为了让注册中心马上知道服务要下线， 可以向eureka 注册中心发送delete 请求
+DELETE:格式为 /eureka/apps/{application.name}
+
+
+eureka 为什么选用AP，为什么不需要选举算法
+eureka为什么选择ap，这跟他的功能有关，他只专注于服务注册和发现，并不会出现数据的竞态条件
+
+
+从eureka工作原理可以看出，eureka client有缓存功能，即使eureka所有的serve都宕掉，仍然能给服务消费者发送服务信息，所以eureka保证了服务可用性，不能保证数据一致性，是一个AP。
+
+而zk，每当master宕机后，都会进行重新选举，重新选举这个过程（一般几十秒），是不能提供服务的，所以zk不能保证服务一直可用，是CP。

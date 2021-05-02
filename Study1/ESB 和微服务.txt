@@ -1,0 +1,72 @@
+monolithic 单片机
+=================+=================+=================+=================+=================+=================+=================+=================+=================+
+什么是 ESB
+ESBs establish data connections between monolithic applications. 
+ESBs focus on connecting the monolithic applications that serve an enterprise – and each of these applications performs a variety of services. 
+
+什么是 Microservice
+is an approach to building applications that focuses on breaking down monolithic applications into independent,but loosely-connected “microservices.”  
+is an approach to developing a single application as a suite of small services, each running in its own process and communicating with lightweight mechanisms, often an HTTP resource API.
+
+
+
+比较
+Microservice: 
+1) more scalable, because Since each feature or service of a microservice architecture is self-contained and autonomous
+2) Platform and language flexibility
+3) reliability, less chance that the failure of one service will result in the failure of the entire ecosystem
+4) Data security and compliance (because data could be put in different place)
+5) Independent teams can develop each microservice
+6) Contained complexity
+7) Deploy faster with CI / CD enviornment
+
+
+
+==============+++++++++++++++==============+++++++++++++++==============+++++++++++++++==============+++++++++++++++
+选 ESB 或者 Microservice 的标准
+depends on how large and diverse the new application environment. 
+
+
+Larger, more diverse environments choose ESB solution, 
+whereas Smaller environments, including web and mobile applications, would choose microservices architecture.
+==============+++++++++++++++==============+++++++++++++++==============+++++++++++++++==============+++++++++++++++
+
+Microservice 沟通的三种方式
+
+1. Http
+2. Messaging
+3. event-driven pattern
+
+==============+++++++++++++++==============+++++++++++++++==============+++++++++++++++==============+++++++++++++++
+
+
+
+
+
+ESB 的好处
+1, Supports different transport protocols like HTTP/S, AMQP, MQTT 
+2, Services can be used by any other service regardless of the limitation of networks and technologies 
+3, Govern service provides the monitoring and statistics of the services
+4, Loosely coupling end services and therefore those can be independently updated without affecting other services
+5, Service failures and recovery procedures can be handled 
+6, Deployments using CI/CD pipelines
+
+ESB 的坏处
+1, Adding additional step/call in the service flow and add a slight delay to the response time. 
+2, Additional cost to setup ESB servers, VPNs, and other infrastructure
+3, All services are routed through a single place; it will have a single point of failure. 
+4, Not having options to scale up a single service in ESB infrastructure. 
+
+==============================================================================================================================
+
+Microservice 的好处
+1, Services are Self-contained and can be scaled independently without effecting other services
+2, Built using different technologies and deployed in different platforms as long as communication can be established between each service
+3, Business does not require to wait until all teams are complete their developed and Deployment of the microservices.
+4, Development and Deployment involve comprehensive CI/CD implementation, and therefore, releases can be planned and executed in parallel.
+
+Microservice 的坏处
+1, Microservices heavily use features of cloud-based container services to get the maximum advantage of scalability, reliability, and fault tolerance
+2, Microservices application success entirely depends on the network communication between them.
+3, Difficult to handle scenarios like transaction properties due to the independent feature.
+4, It would require an extensive effort to convert legacy it to microservices.

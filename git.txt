@@ -1,0 +1,152 @@
+一、主分支master
+
+代码库应该有且只有一个主分支。所有提供给用户使用的正式版本，都在这个主分支上发布。
+Git主分支的名字，默认叫做Master。它是自动建立的，版本库初始化以后，默认就是在主分支在进行开发。
+
+
+http://www.ruanyifeng.com/blog/2012/07/git.html
+
+git pull 相当于:
+git fetch origin master //从远程主机的master分支拉取最新内容
+git merge FETCH_HEAD    //将拉取下来的最新内容合并到当前所在的分支中
+
+
+============================================================================================
+Git flow
+
+1. 主分支Master
+
+
+
+
+============================================================================================
+$ git tag -l "v1.8.5*"
+v1.8.5
+v1.8.5-rc0
+v1.8.5-rc1
+v1.8.5-rc2
+v1.8.5-rc3
+v1.8.5.1
+v1.8.5.2
+v1.8.5.3
+v1.8.5.4
+v1.8.5.5
+
+
+
+============================================================================================
+
+
+Git 支持两种标签：轻量标签（lightweight）与附注标签（annotated）。[轻量标签本质上是将提交校验和存储到一个文件中——没有保存任何其他信息]
+
+# 添加 annotated tag
+git tag -a v1.4 -m "my version 1.4" 加tag, 并且显示信息
+
+# 添加 lightweight tag
+git tag v1.4-lw
+
+# 显示tag 信息
+git show v1.4
+
+=============================================================================================
+# 给过去某一次提交打标签
+git log --pretty=oneline
+
+vincent@vzhang:~/workspace/self/coffee$ git log --pretty=oneline
+0f0539e48f3b1f98491d8269d55731cad61347c6 (HEAD -> master, origin/master, origin/HEAD) depedency version upgrade
+a521c7bb19a3cb6a1f4634d06d2f461b9f3e4fb8 Add mysql no need Hibernate-sequence
+39777966cd6d159fc7db1c102c3ef4d75e79ec65 upgrade lib, include Spring boot 2, Spring 5, JDK11
+9017c6dbfec537114c0ef450f7b6ac96b902ba97 add nio testing
+bac66fe6597db327dcb235fc3be3bb1ad3f6fb49 add cache feature
+85e447052ee1ebdb0e61fe306f75cc4799efb624 add JMXTrans
+5acc8d7fc9c95170a89d9c5fbc6b18e273a74409 add for perf4j performoance
+e62277c71ab13dea669405f51fb23c18dd8b80d6 metric implement
+5b8b0fbf1e85890731a17eba162dc1ac4261bc28 add test
+da996c8f98bc5571f23d1a46c90a559bd3fcc061 add metrics feature
+
+git tag -a v1.2 5acc8d7
+
+=============================================================================================
+
+上传标签
+git push origin v1.5
+
+上传多个标签
+git push origin --tags
+
+删除标签
+git tag -d v1.4-lw
+git push origin --delete <tagname>
+
+=============================================================================================
+
+git checkout feature
+git merge master
+相当于
+git merge master feature
+
+
+
+git checkout feature
+git rebase master
+
+---------------------------------------------------------------------------------------------
+
+git rm --cached abc.txt // delete the abc.txt in controlled area, but it still exist in disk
+git reflog 查看版本信息
+git log 查看版本详细信息
+
+
+git reset --head 9705ad9 # 其中9705ad9是版本号，意思是说把版本返回到 9705ad9 的版本
+
+
+
+* 如果面对merge 冲突, 首先修改好应该冲突的文件，然后 git add ....., 然后 git commit -m "ewfewfewf"
+
+
+=============================================================================================
+对于还没有 commit 的时候想覆盖缓存区的文件：
+git reset HEAD <filename>
+
+
+git reset 参数
+那我个人的理解，--soft用处不是很多，
+当commit之后想撤回commit，但还不想覆盖工作区内容时，使用--mixed；
+当想完全回滚时，使用--hard来覆盖工作区。
+
+
+如何回滚文件
+1. 修改完，还未执行git add
+	- git checkout .
+
+2. 使用git add 提交到暂存区，还未commit之前
+	- git reset  #先用Head指针覆盖当前的暂存区内容
+	- git checkout . 再用暂存区内容覆盖工作区内容
+Or:
+	- git reset --hard
+
+// 本地工作区间代码 回退到上一次版本、上上次、前10个版本
+git reset --hard HEAD^
+git reset --hard HEAD^^
+git reset --hard HEAD~10
+
+
+3. 已经git commit，还未git push
+	- git reset --hard <commit id>
+
+Important:
+git revert是用一次新的commit来回滚之前的commit，git reset是直接删除指定的commit
+
+git log 然后 git revert <commit id> 就会留下记录
+=============================================================================================
+
+
+
+marge 特点：自动创建一个新的commit
+如果合并的时候遇到冲突，仅需要修改后重新commit
+优点：记录了真实的commit情况，包括每个分支的详情
+缺点：因为每次merge会自动产生一个merge commit，所以在使用一些git 的GUI tools，特别是commit比较频繁时，看到分支很杂乱。
+
+rebase 特点：会合并之前的commit历史
+优点：得到更简洁的项目历史，去掉了merge commit
+缺点：如果合并出现代码问题不容易定位，因为re-write了history

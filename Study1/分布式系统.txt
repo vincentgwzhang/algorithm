@@ -1,0 +1,37 @@
+为什么使用分布式系统？
+
+1, Size of teams          When company has more teams, then hard to align release together, so need distribution system
+2, Organization of work   And different team has different module to develop
+3, Process of development And these teams hard to align the same develop process
+4, Security measures      无人可以了解整个系统
+
+Techniqualy:
+1, Performance
+2, Decrease error, even has error, easy to identify
+3, Scalability
+4, Availability
+
+
+Hexagonal Architecture
+Allow an application to equally be driven by users, programs, automated test or batch scripts, and to be developed and tested in isolation from its eventual run-time devices and databases.
+
+========================================================================================================================
+
+DDD 分层架构
+
+以领域模型为核心，实行分层架构，内部核心业务逻辑与外部应用、资源隔离并解耦
+
+
+实体（Entity）:  有ID, 有唯一标识有状态的对象，例如订单
+值对象（Value Object）: 没有唯一标识符的实体
+领域服务（Domain Service）: 操作的是无状态的逻辑, 一些不能归属到 Doamin的行为
+聚合及聚合根（Aggregate，Aggregate Root）:一个电脑包含硬盘、CPU、内存条等，这一个组合就是一个聚合，而电脑就是这个组合的聚合根。
+工厂（Factory）和资源库(Repositories)之间存在一定的关系。它们都是模型驱动设计中的模式，它们都能帮助我们关联领域对象的生命周期。然而工厂关注的是对象的创建，而资源库关心的是已经存在的对象。
+
+其实就是让实体（entity）拥有行为，把 service 的动作放到 entity 上面，面向业务
+
+经典的分层:
+用户接口层：User interface              #主要用于向用户展示信息，并接受用户指令。
+应用层：    Application                 #相当于 controller 层，对外提供接口，对内调用领域层，不包含业务逻辑，是领域模型的门面。
+领域层：    Domain                      #esponsible for representing concepts of the business, information about the business situation, and business rules
+基础设施层：Infrastructure              #为其他层提供通用的技术能力，如：层间的通信、持久化机制等。

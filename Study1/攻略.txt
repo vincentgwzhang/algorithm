@@ -1,0 +1,57 @@
+Distributed systems: trade-offs between different architectures, CAP theorem, eventual consistency, patterns of async communication etc
+
+CAP 理论，CAP 共有什么架构，他们之间怎么权衡
+
+Software development: agile development, TDD, OO heuristics and principles, refactoring, readability vs performance, tensions between principles, etc
+
+https://stackoverflow.com/questions/183201/should-a-developer-aim-for-readability-or-performance-first
+https://softwareengineering.stackexchange.com/questions/43151/should-you-sacrifice-code-readability-with-how-efficient-code-is
+https://blog.usejournal.com/performance-vs-readability-2e9332730790
+https://www.theserverside.com/discussions/thread/41857.html
+https://medium.com/@rutpshah88/performance-vs-readability-one-of-the-most-debatable-topics-in-software-development-88fd3658d2c7
+https://www.javaer101.com/en/article/3101388.html
+https://blog.jbrains.ca/permalink/what-matters-most-when-writing-code-readability-performance
+https://www.reddit.com/r/rust/comments/jfpsmr/performance_vs_readability_for_noobs/
+
+
+
+"tensions between principles" ==> 是说什么
+
+https://www.methodsandtools.com/archive/archive.php?id=4#:~:text=What%20exactly%20is%20refactoring%3F,without%20changing%20its%20observable%20behaviour%22.&text=Each%20refactoring%20is%20a%20simple,possible%20that%20bugs%20were%20introduced.
+https://refactoring.guru/refactoring
+https://dzone.com/articles/what-is-refactoring
+https://codegym.cc/groups/posts/196-how-refactoring-works-in-java
+https://www.altexsoft.com/blog/engineering/code-refactoring-best-practices-when-and-when-not-to-do-it/
+https://medium.com/ibm-garage/easy-places-to-start-in-refactoring-java-to-microservices-8431000e40a5
+===============================================================================================================================================================
+
+Computer Science fundamentals related to concurrency, OS scheduler and its workings, etc
+
+
+https://www.geeksforgeeks.org/concurrency-in-operating-system/
+https://www.researchgate.net/publication/2953913_Scheduling_support_for_concurrency_and_parallelism_in_the_Mach_operating_system
+https://www.coursera.org/lecture/real-time-systems/the-principles-of-scheduling-wBgij
+https://www.unf.edu/public/cop4610/ree/Notes/PPT/PPT8E/CH%2002%20-OS8e.pdf
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

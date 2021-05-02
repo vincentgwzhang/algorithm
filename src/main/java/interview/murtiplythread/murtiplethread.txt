@@ -1,0 +1,4 @@
+ArrayList 是线程不安全的。
+Vector    是线程安全的。
+
+//java.util.concurrentModificationException

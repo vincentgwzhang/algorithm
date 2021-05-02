@@ -1,0 +1,28 @@
+Meeting
+
+===============================================================================================================================================
+
+Sprint planning: The whole team present during this meeting, including PO and Scrum master. The goal of this meeting is to develop realistic Sprint backlog and define the highest priority tasks which need to be done during the length of each Sprint.
+Technique meeting: For each task, will split the tasks in detail steps, write in the confluence page
+
+===============================================================================================================================================
+
+Everyday we will have a stand-up, and talk about what we did yesterday
+
+===============================================================================================================================================
+
+Spring review: Show what we did to the customer, if customer has any comment, then we will add into backlog and improve it.
+
+===============================================================================================================================================
+
+Spring retrospective, talking about:
+
+What went right
+What went wrong
+What teams could do differently to improve collaboration in the future
+
+===============================================================================================================================================
+
+Backlog Refinement Meeting
+- Explain and Prioritize user story
+- Estimate the task

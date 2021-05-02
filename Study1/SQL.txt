@@ -1,0 +1,15 @@
+NoSQL 的分类
+
+key-value, 如 Redis
+document based 如 CouchDB, Elasticsearch, MongoDB
+
+NoSQL 特点和优势
+1. Performance, because no need to join table, no restriction
+1, 一般不支持ACID特性；
+2, 无需经过sql层的解析，读写性能很高；
+3, 数据没有偶合性，扩展性强
+
+
+Relationship DB
+* Maintainance high cost, index, consistence
+* Scalability not convience

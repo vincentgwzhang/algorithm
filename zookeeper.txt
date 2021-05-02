@@ -1,0 +1,12 @@
+常用命令：
+
+ls /  查询所有根节点
+ls /idea 查询idea节点下边的内容
+
+delete /idea 删除idea节点
+delete /idea/node-1 删除idea节点下边的node-1子节点
+
+create /idea/node-2 "v1" #创建idea/node-2节点 并且写入v1值
+create -e /temp "" # 这是临时节点
+
+get /idea/node-1 获取相关节点

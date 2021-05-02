@@ -1,0 +1,11 @@
+并行的好处
+1, Running of multiple applications
+2, Better resource utilization         ## It enables that the resources that are unused by one application can be used for other applications.
+3, Better average response time        ## Without concurrency, each application has to be run to completion before the next one can be run.
+4, Better performance
+
+并行的坏处
+1, 非原子性 Non-atomic
+2, Race condition
+3, Blocking
+4, Deadlock                            ## It occurs when two processes are blocked and hence neither can proceed to execute.

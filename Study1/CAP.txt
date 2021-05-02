@@ -1,0 +1,20 @@
+什么是CAP
+
+A system or a software, can only ever fulfil two out of three elements.
+Consistency  – that reads are always up to date, which means any client making a request to the database will get the same view of data.
+Availability – database requests always receive a response (when valid).
+Partition tolerance – that a network fault doesn’t prevent messaging between nodes.
+
+对于分区系统，永远都要满足 P (就是分区容错性)。所以要在 A 和 C 之间衡量(trade-offs)
+
+使用 CP 的原则：
+you need consistency (or what is called a CP database) if the data in the database must always be up to date and aligned, even in the instance of a network failure
+
+CP 的数据库:
+MongoDB / Redis / HBase
+
+使用 AP 的原则：
+Availability is essential when data accumulation is a priority. 
+
+AP 的数据库:
+Cassandra / DynamoDB

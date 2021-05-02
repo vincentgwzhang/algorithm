@@ -1,0 +1,42 @@
+JVM
+
+类装载进入JVM经历: 
+loading, (load .class file...) 
+linking, (verify, preparare JVM memory, resolution)
+initialization (bootstrap ....)
+
+组建：
+
+私有
+Native method stacks / Stack area (Xss) / PC Registers java.lang.StackOverflowError
+
+共有
+Method area
+Heap area (也及是GC那部分) 
+ - java.lang.OutOfMemeoryError
+ - Xms / Xmx
+ - NewRatio = 3 : => Young:Old=1:3
+ - SurvivorRatio: 3 => Eden: Survivor = 3:2 (因为Survivor有两个)
+
+algorithm
+=====================================================================================================================
+
+垃圾回收算法
+1, 标记-清除算法   [效率不高，产生大量碎片，导致频繁回收]
+2, 复制算法（把存活的对象清除，并且删除整个内存块）       [需要额外的区域作为复制区，当存活率高的时候效率会下降]
+3, 标记整理(往内存的一段移动)                       [算法复杂度大，执行步骤多]
+4, 分代收集算法 -> Young generation, tenered generation, parmenet generation
+
+
+=====================================================================================================================
+
+JVM 垃圾收集器和使用的算法
+
+新生代:
+Serial 收集器 / ParNew 收集器 / Parallel GC 收集器 ======> 使用复制算法
+
+老年代:
+SerialOld       | 标记 - 整理算法 
+ParallelOldGC   | 标记压缩算法
+CMS 回收器       | 标记清除法
+G1               |

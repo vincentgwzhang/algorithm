@@ -1,0 +1,24 @@
+6 years ago when I joined Oracle. The office manager gave me a project, and I need to finished in 3 months. The task is developing a sports club application, for internal office use to raise all the activities, and staffs enroll their favourite activities by the application. Above is business requirment, and the technology requirment is we need to use JDeveloper, which is Oracle Java IDE, with Oracle DB, and frontend need to use JSF.
+
+At that time, there were two more new guys join this task. But they just graduated, they even have no any project experience.
+
+-------------------------------------------------------------------------------------------------------------------------------------
+
+Which means, new technology, new working enviornment, with flash guys, and finish a project in 3 months.
+
+-------------------------------------------------------------------------------------------------------------------------------------
+
+So, I have to take the lead role. Following standard project develop cycle. First of all, I start a small training, tell them how to develop a project, how many different phases, in each phase, what is the input, what is the output, what is the millionstore, how to let manager know we are working, how to get comment from other collegues.
+
+We developed this task one step by another, I organize to have brain storm, and get comment by other collegues, to catalog, and prioritize function we need to implement, and finally submit our tasks and timeline to office manager. at the meanwhile, we prepare knowledges and learn about what is JSF framework, and how to use Jdeveloper.
+
+After that I organized to talked about detailed user case, and DB design. And then we start develop, during the project development, I keep monitor their quality and let them grow up, having more project development experience. For example, at the beginning, I found that they don't have common projece development sence. They will checkout and checkin source code every 3 days, or they direct change our DB without mark down SQL or tell others. So I have to keep an eye on them every day, make sure today's issue never leave tomorrow to handle.
+
+-------------------------------------------------------------------------------------------------------------------------------------
+
+And I presentate the function to office manager and get comment to improve function according to schedule. And finally, three months later, 
+1) we have the first version release to the server
+2) Two new guys get the first project experience
+3) And I also learn how to develop a web application with JSF
+4) and we passed our probation also.
+

@@ -1,0 +1,26 @@
+BASE 是 Basically Available（基本可用） 、Soft-state（软状态） 和 Eventual consistency（最终一致性） 三个短语的缩写。
+
+Basically Available: 
+When distributed system occure error, it allow lost some availability. Like:
+1, Response time degrade
+2, Some non-core functional lost
+
+
+Soft state意味着即使没有输入；系统状态可能会改变
+最终的一致性意味着系统将随着时间的推移变得一致
+
+
+Base，其实也叫 Eventual consistency的定义
+Eventual consistency is a consistency model used in distributed computing to achieve high availability that informally guarantees that, if no new updates are made to a given data item, eventually all accesses to that item will return the last updated value
+
+
+分布式一致性的 3 种级别：
+强一致性 ：系统写入了什么，读出来的就是什么。
+弱一致性 ：不一定可以读取到最新写入的值，也不保证多少时间之后读取到的数据是最新的，只是会尽量保证某个时刻达到数据一致的状态。
+最终一致性 ：弱一致性的升级版，系统会保证在一定时间内达到数据一致的状态。
+
+
+Consul:    CP
+Zookeeper: CP
+Eureka:    AP
+

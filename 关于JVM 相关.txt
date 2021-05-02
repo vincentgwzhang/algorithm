@@ -1,0 +1,152 @@
+栈管运行，堆管存储
+GC root 开始遍历，只有从GC root 可达，才叫live 对象
+
+四大算法：
+引用计数法 --> 无法解决互相引用的问题
+作为改良，使用可达性分析（其他三个算法的基础）
+1，复制          Coping
+2，标记清除  Mark-Sweep
+3，标记压缩  Mark-Compact，从at the bottom of heap to at the top of the heap, at the end all the live objects are in the bottom
+
+碎片：fragmentation
+
+什么对象可以作为GC root 的对象? 
+1，虚拟机栈中的引用对象 Person p = new Person()
+2，方法区中类静态属性引用的对象
+public static void m () {
+  person p = new person();
+}
+3，方法区中常量引用对象
+class XX {
+   public static final Person p = new Person();
+}
+4，本地方法栈（native) 引用的对象
+
+
+========================================================================================
+-Xms
+-Xmx
+-Xss
+-Xnn 新生区年轻代size
+
+JVM参数，分别是：
+标配参数，X参数，和XX参数
+
+标配参数，就是 java --version, 或者 java --help
+X参数，就是 Xint, Xcomp, Xmixed
+Xint 解释执行
+Xcomp 编译执行
+Xmixed 混合模式 (默认的)
+
+例如，
+C:\Users\gzhang>java -Xint -version
+java version "1.8.0_172"
+Java(TM) SE Runtime Environment (build 1.8.0_172-b11)
+Java HotSpot(TM) 64-Bit Server VM (build 25.172-b11, interpreted mode)
+
+C:\Users\gzhang>java -Xcomp -version
+java version "1.8.0_172"
+Java(TM) SE Runtime Environment (build 1.8.0_172-b11)
+Java HotSpot(TM) 64-Bit Server VM (build 25.172-b11, compiled mode)
+
+C:\Users\gzhang>java -Xmixed -version --> 这是默认的，等同于 java -version
+java version "1.8.0_172"
+Java(TM) SE Runtime Environment (build 1.8.0_172-b11)
+Java HotSpot(TM) 64-Bit Server VM (build 25.172-b11, mixed mode)
+
+XX参数，大方向分为
+1，布尔类型，例如 -xx+ 表示开启， -xx- 表示关闭
+例如：如何查看运行中的JAVA程序它的某个JVM参数是否开启或者值是多少？
+
+jps -l 获取 process 句柄（int 进程编号）
+jinfo -flag PrintGCDetails <int 进程编号>
+注意：也可以通过 jinfo -flgas <int 进程编号> 获取所有信息
+查看这个<int> 的进程是否有打印GCDetail
+
+在程序上加上：
+-XX:+PrintGCDetails 
+-XX:+UseCompressedClassPointers 
+-XX:+UseCompressedOops 
+-XX:+UseFastUnorderedTimeStamps 
+-XX:-UseLargePagesIndividualAllocation 
+-XX:+UseParallelGC
+
+2，KV 类型
+C:\Users\gzhang>jinfo -flag MetaspaceSize 4184
+-XX:MetaspaceSize=21807104
+记住，程序当中":" 前后不能有空格，也是在程序上添加上
+-XX:MetaspaceSize=21807104
+
+====================================================================
+但是，重点是，有例外的，就是 -Xms, 和 -Xmx, 其实
+-Xms1024m 相当于 -XX:InitHeapSize=1024m
+-Xmx1024m 相当于 -XX:MaxHeapSize=1024m
+-Xss1024m 相当于 -XX:ThreadStackSize=1024m 单个线程栈的大小，默认是 512K - 1024K
+====================================================================
+
+总结，也就是说要么是：
+-XX:+UseParallelGC
+要么是
+-XX:MetaspaceSize=21807104
+
+其中值得注意的几个选项：
+-XX:+PrintFlagsInitial
+
+
+
+
+
+
+
+日常用到的调用参数:
+-Xms1024m
+-Xmx4096m
+-Xss1024k--------------> 爆stack over flow 的可能性减少
+-XX:MetaspaceSize=1024m
+-XX:+PrintCommandLineFlags
+-XX:+PrintGCDetails
+-XX:+UseSerialGC
+
+-XX:NewRatio=2 就是老年代是新生代的2倍。2是默认值
+-XX:MaxTenuringThreshold=15 经过15次GC 回收依然生存的话，进入老年代。最高值也就是15，通常越大越好，这样产生Full GC 的机会少点。
+
+
+Troubleshot:
+OOM: java heap space
+原因：GC 解决不了问题，撑爆了
+解决：设置更大的 Xms, Xmx
+
+
+
+
+=============================================================================================
+垃圾回收算法：4种
+1, 标记清除法
+2, 复制
+3, 标记压缩法
+4, 计算器算法
+
+垃圾回收器，谈谈你的理解
+垃圾回收的方式，有哪些
+串行垃圾回收器：只有一个线程进行垃圾回收，并且用户线程暂停。Serial
+并行垃圾回收器：也会暂停所有用户进程，只是并行而已 Parallel
+并发垃圾回收器：CMS 不需要停顿，互联网公司多用这种，分四步。其中两步会暂停。
+
+GC算法是内存回收的方法论(Methodology)，垃圾回收器是实现
+
+
+查看默认的垃圾回收器
+
+新生代：Serial Copying (UseSerialGC), Parallel Scavenge(UseParallelGC) ParNew(UseParNewGC)
+老生代：Serial MSC Parallel Compacting(UseParallelOldGC) CMS(UseConcMarkSweepGC)
+而G1(UseG1GC) 新生代和老生代
+
+如何选择呢？
+单CPU或者小程序
+-XX:+UseSerialGC
+多PU，需要最大的吞吐量（吞吐量是说程序运行时间占整个时间的比例。例如，99%的吞吐量表示只有1%的时间用于GC）
+-XX:+UseParallelGC或者
+-XX:+UseParallelOldGC
+互联网：
+-XX:+UseConcMarkSweepGC
+-XX:ParNewGC

@@ -1,0 +1,6 @@
+mvn dependency:copy-dependencies -DoutputDirectory=src/main/webapp/WEB-INF/lib  -DincludeScope=runtime
+命令将jar包拷贝到/WEB-INF/lib目录下。
+
+mvn dependency:analyze 直接告诉我多余的依赖
+mvn dependency:resolve 打印已解决依赖的列表
+mvn dependency:tree    打印工程树依赖结构

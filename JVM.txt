@@ -1,0 +1,83 @@
+JVM
+
+JVM的运行内存 JMM (Java Memory Model) 有公有区和私有区组成。
+
+公有区包括方法区（Method Area）和 堆 (heap)。没错，所有什么年轻代老年代就在这里。
+(注意：JDK1.8以后就没有Method Area了，只有MetaSpace, 用来存放class，Method等元数据信息)
+私有区包括 Java stack, Native Method stack, Program Counter Register
+
+堆，包括 Young Generation (包括 EdenSpace, FromSpace, ToSpace)和 Old generation
+Java堆是被所有线程共享的一块内存区域，在虚拟机启动时创建。此内存区域的唯一目的就是存放对象实例，几乎所有的对象实例都在这里分配内存。
+EdenSpace:FromSpace:ToSpace = 8:1:1
+Old generation:Young Generation = 2:1
+
+
+jvm常用参数
+-Xms 初始堆大小，默认是物理内存的1/64
+-Xmx 最大堆大小，默认是物理内存的1/4
+-Xmn 年轻代大小，默认整个堆的3/8
+
+XX:MaxMetaspaceSize 空间最大内存，默认是没有限制的
+
+详细可以看JMM_Heap.png
+
+详解 GC 的过程:
+1) Most of the newly created objects are located in the Eden Memory space, When Eden space is filled with objects, Minor GC is performed and all the survivor objects are moved to one of the survivor spaces, Minor GC also checks the survivor objects and moves them to the other survivor space. So at a time, one of the survivor space is always empty
+
+2) Objects that have survived many cycles of GC, are moved to the old generation memory space. Major GC is performed in Old generation memory when it’s full.
+
+
+========================================================================================================
+
+Minor GC: 从新生代空间回收内存
+Major GC: 清理 Tenured 区，用于回收老年代
+Full GC : 针对新生代，老年代，元空间
+
+
+
+
+
+
+
+
+垃圾回收算法 Garbage collection
+Mark-Sweep   : 效率不高
+Coping       : 浪费额外内存作为复制区，存活率高效率下降
+Mark-Compact : 算法复杂度大
+
+三种算法的比较：
+	效率： 复制 > 标记整理 > 标记清除
+	内存利用率： 标记整理 > 标记清除 > 复制
+	内存整齐度： 复制 = 标记整理 > 标记清除
+
+在新生代中，每次垃圾收集时都发现有大批对象死去，只有少量存活，那就选用“复制算法”，
+在老年代中，因为对象存活率高、没有额外空间对它进行分配担保，就必须使用“标记-清理”或“标记-整理”算法来进行回收。
+
+分代收集算法   :(Generational Collection)
+目前大部分VM 垃圾收集器采用的算法
+
+==============================================================================================
+
+类的加载的五个过程：
+1, 加载
+2, 验证
+3, 准备
+4, 解析
+5, 初始化
+
+
+JVM 预定义的类加器
+
+The extension framework makes use of the class-loading delegation mechanism. When the runtime environment needs to load a new class for an application, it looks for the class in the following locations, in order:
+
+Bootstrap / Extension / Application
+
+
+“父子加载器”之间的关系是继承吗？ 否
+
+=================================================================================
+为什么JNDI，JDBC等需要破坏双亲委派？
+
+DriverManager是被根加载器加载的，那么在加载时遇到以上代码，会尝试加载所有Driver的实现类，但是这些实现类基本都是第三方提供的，根据双亲委派原则，第三方的类不能被根加载器加载。
+
+=================================================================================

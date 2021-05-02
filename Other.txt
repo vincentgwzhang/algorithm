@@ -1,0 +1,7 @@
+1byte = 8bit
+byte:1个字节 8位 -128~127
+11111111-01111111
+
+short/ char   ：2 byte, 16位
+int  / float   : 4 byte, 32位
+long / doubt   : 8 byte, 64位

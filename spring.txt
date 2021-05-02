@@ -1,0 +1,86 @@
+Spring AOP已经集成了AspectJ，AspectJ应该算得上是Java生态系统中最完整的AOP框架了。AspectJ相比于Spring AOP功能更加强大，但是Spring AOP相对来说更简单。
+
+====================================================================================================================================================================
+
+Spring中的bean的作用域有哪些？
+1.singleton：唯一bean实例，Spring中的bean默认都是单例的。
+2.prototype：每次请求都会创建一个新的bean实例。
+3.request：每一次HTTP请求都会产生一个新的bean，该bean仅在当前HTTP request内有效。
+4.session：每一次HTTP请求都会产生一个新的bean，该bean仅在当前HTTP session内有效。
+5.global-session：全局session作用域，仅仅在基于Portlet的Web应用中才有意义，Spring5中已经没有了。Portlet是能够生成语义代码（例如HTML）片段的小型Java Web插件。它们基于Portlet容器，可以像Servlet一样处理HTTP请求。但是与Servlet不同，每个Portlet都有不同的会话。
+
+====================================================================================================================================================================
+
+What is IOC
+As the name implies Inversion of control means now we have inverted the control of creating the object from our own using new operator to container or framework.
+Now it’s the responsibility of container to create object as required.
+
+为什么用 field injection 而不是 setter injection? 因为用 setter injection 就不能在测试的时候用 @Autowired
+
+
+What is AOP
+AOP: Aspect oriented programming
+AOP is a continuation of OOP (object-oriented programming).
+
+1, There are many modules in program, some for log record, some for access control, or some for export metrics to monitor server for example.
+
+定义：
+Aspect is dynamic cross cutting different of module functions to assemble to some logic,
+so AOP add / extend additional behavior to existing code without modifying the code itself
+
+
+
+
+Pointcut
+- An expression that selects one or more Join Points.
+
+Join Point
+- A joinpoint is a candidate point where an aspect can be plugged in, and extensive / additional function
+- 例子中，所有的EmployeeCRUDAspect函数就是一个 joint point
+
+Advice
+- Code to be executed at each selected Join Point
+(例子中，1 match 1, join point, for example, before, after, after throwing ...)
+
+Aspect
+- A module that encapsulates pointcuts and advice 例子中，EmployeeCRUDAspect 就是 aspect
+
+AOP Proxy
+-AOP proxy is an object used to perform the contract area. This object is created by the AOP framework. In Spring AOP proxy is part of JDK dynamic proxy or proxy CGLIB.
+
+
+@Aspect
+public class EmployeeCRUDAspect {
+
+    @Before("execution(* EmployeeManager.getEmployeeById(..))")
+    public void logBeforeV1(JoinPoint joinPoint)
+    {
+        System.out.println("EmployeeCRUDAspect.logBeforeV1() : " + joinPoint.getSignature().getName());
+    }
+
+    @Before("execution(* EmployeeManager.*(..))")
+    public void logBeforeV2(JoinPoint joinPoint)
+    {
+        System.out.println("EmployeeCRUDAspect.logBeforeV2() : " + joinPoint.getSignature().getName());
+    }
+
+    @After("execution(* EmployeeManager.getEmployeeById(..))")
+    public void logAfterV1(JoinPoint joinPoint)
+    {
+        System.out.println("EmployeeCRUDAspect.logAfterV1() : " + joinPoint.getSignature().getName());
+    }
+
+    @After("execution(* EmployeeManager.*(..))")
+    public void logAfterV2(JoinPoint joinPoint)
+    {
+        System.out.println("EmployeeCRUDAspect.logAfterV2() : " + joinPoint.getSignature().getName());
+    }
+}
+
+@Aspect
+aspect {
+
+	@Advice (point cut)
+	joint point
+
+}

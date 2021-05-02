@@ -1,0 +1,68 @@
+Spring Core?
+IOC / AOP
+1, Inversion of control (IoC) is the principle where the control flow of a program is inverted:
+2, instead the programmer controls the flow of a program, the external sources (framework, services, other components) take control of it.
+3, As the name implies Inversion of control means now we have inverted the control of creating the object from our own using new operator to container or framework, Now it’s the responsibility of container to create object as required.
+
+=======================================================================================================================
+AOP
+定义：
+Aspect is dynamic cross cutting different of module functions to assemble to some logic,
+so AOP add / extend additional behavior to existing code without modifying the code itself
+
+
+
+
+Pointcut
+- An expression that selects one or more Join Points.
+
+Join Point
+- A joinpoint is a candidate point in the Program Execution of the application where an aspect can be plugged in.
+- 例子中，所有的EmployeeCRUDAspect函数就是一个 joint point
+
+Advice
+- Code to be executed at each selected Join Point 
+(例子中，1 match 1, join point, for example, before, after, after throwing ...)
+
+Aspect
+- A module that encapsulates pointcuts and advice 例子中，EmployeeCRUDAspect 就是 aspect
+
+AOP Proxy
+-AOP proxy is an object used to perform the contract area. This object is created by the AOP framework. In Spring AOP proxy is part of JDK dynamic proxy or proxy CGLIB.
+
+
+@Aspect
+public class EmployeeCRUDAspect {
+     
+    @Before("execution(* EmployeeManager.getEmployeeById(..))")
+    public void logBeforeV1(JoinPoint joinPoint) 
+    {
+        System.out.println("EmployeeCRUDAspect.logBeforeV1() : " + joinPoint.getSignature().getName());
+    }
+     
+    @Before("execution(* EmployeeManager.*(..))")
+    public void logBeforeV2(JoinPoint joinPoint) 
+    {
+        System.out.println("EmployeeCRUDAspect.logBeforeV2() : " + joinPoint.getSignature().getName());
+    }
+     
+    @After("execution(* EmployeeManager.getEmployeeById(..))")
+    public void logAfterV1(JoinPoint joinPoint) 
+    {
+        System.out.println("EmployeeCRUDAspect.logAfterV1() : " + joinPoint.getSignature().getName());
+    }
+     
+    @After("execution(* EmployeeManager.*(..))")
+    public void logAfterV2(JoinPoint joinPoint) 
+    {
+        System.out.println("EmployeeCRUDAspect.logAfterV2() : " + joinPoint.getSignature().getName());
+    }
+}
+
+@Aspect
+aspect {
+
+	@Advice (point cut)
+	joint point
+
+}

@@ -1,0 +1,68 @@
+equals()的设计原则
+对称性 symmetry    : 如果x.equals(y)返回是true，那么y.equals(x)也应该返回是true。
+反射性 Reflective  : x.equals(x)必须返回是true。
+类推性: 如果x.equals(y)返回是true，而且y.equals(z)返回是true，那么z.equals(x)也应该返回是true。
+一致性: 如果x.equals(y)返回是true，只要x和y内容一直不变，不管你重复x.equals(y)多少次，返回都是true。
+非空性: x.equals(null)，永远返回是false；x.equals(和x不同类型的对象)永远返回是false。
+
+hashCode()的设计原则
+1, 在一个Java应用的执行期间，如果一个对象提供给equals做比较的信息没有被修改的话，该对象多次调用hashCode()方法，该方法必须始终如一返回同一个integer。
+2, 如果两个对象根据equals(Object)方法是相等的，那么调用二者各自的hashCode()方法必须产生同一个integer结果。
+3, 并不要求根据equals(java.lang.Object)方法不相等的两个对象，调用二者各自的hashCode()方法必须产生不同的integer结果。然而，程序员应该意识到对于不同的对象产生不同的integer结果，有可能会提高hash table的性能。
+
+Hashcode 函数的意义在于增加查找元素的效率
+
+为何重写equals方法就得重写hashCode方法
+因为必须保证重写后的equals方法认定相同的两个对象拥有相同的哈希值
+
+
+
+Java中Wait、Sleep和Yield方法的区别
+1, wait()和sleep()的关键的区别在于，wait()是用于线程间通信的，而sleep()是用于短时间暂停当前线程
+2, 更加明显的一个区别在于，当一个线程调用wait()方法的时候，会释放它锁持有的对象的管程和锁，但是调用sleep()方法的时候，不会释放他所持有的管程。
+
+
+yield和sleep的区别
+yield方法会临时暂停当前正在执行的线程，来让有同样优先级的正在等待的线程有机会执行。如果没有正在等待的线程，或者所有正在等待的线程的优先级都比较低，那么该线程会继续运行。
+
+
+为什么 Enum 不能被继承
+1, Enum 的成员全部都是静态的， Enum 的构造函数也是私有的。
+2, System.out.println(E3.NORTH instanceof E3);
+3, Because that would allow more instances to be created.
+
+
+Lambda 的意义
+Lambda 表达式（lambda expression）是一个匿名函数，Lambda表达式基于数学中的λ演算得名，直接对应于其中的lambda抽象（lambda abstraction），
+是一个匿名函数，即没有函数名的函数。Lambda表达式可以表示闭包（注意和数学传统意义上的不同）。
+
+
+
+函数式接口(Functional Interface)
+Predicate -- 传入一个参数，返回一个bool结果， 方法为boolean test(T t)
+Consumer -- 传入一个参数，无返回值，纯消费。 方法为void accept(T t)
+Function<T,R> -- 传入一个参数，返回一个结果，方法为R apply(T t)
+Supplier -- 无参数传入，返回一个结果，方法为T get()
+UnaryOperator -- 一元操作符， 继承Function<T,T>,传入参数的类型和返回类型相同。
+BinaryOperator -- 二元操作符， 传入的两个参数的类型和返回类型相同， 继承BiFunction<T,T,T>
+
+Functional programming is a programming style in which computations are codified as functional programming functions.
+These are mathematical function-like constructs (e.g., lambda functions) that are evaluated in expression contexts.
+
+Functional programming languages are declarative, meaning that a computation's logic is expressed without describing its control flow.
+
+面向对象的特征
+抽象 Abstract
+继承 Inheritance
+封装 Encapsulation
+多态 polymorphism (针对的是行为, for the same behaviour, would have different implementation)
+
+==============================================================================================================================================
+
+String str = new String("abc"); 创建了多少个对象
+两个。一个是静态储存区的 "abc"，一个是用于 new 创建在堆上的对象
+
+==============================================================================================================================================
+
+checked 异常继承于 Exception 类
+unchecked 异常继承于 RuntimeException 类
