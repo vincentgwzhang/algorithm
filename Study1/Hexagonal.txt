@@ -1,0 +1,23 @@
+Theological:
+
+1, Hexagonal architecture is a model of designing software applications around domain logic to isolate it from external factors.
+2, In a hexagonal architecture, this service is an adapter that implements the port
+3, Hexagonal architecture defines the inside and the outside part.
+4, Application layer is responsible for orchestrating the execution of domain logic
+
+
+our application into three layers;
+1, domain      ===================> core
+2, application ===================> be called
+3, Adapters    ===================> basic connect
+
+
+
+Compare to DDD
+1, Domain
+2, Application
+3, Presentation
+4, Instructure
+
+
+洋葱架构 = 六边形（Hexagonal）架构

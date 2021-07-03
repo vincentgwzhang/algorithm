@@ -1,5 +1,6 @@
 package interview.lock;
 
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
@@ -15,7 +16,21 @@ public class DeadLockDemo {
 	 * 16556 org.eclipse.jdt.internal.junit.runner.RemoteTestRunner
 	 * 
 	 * 2, 然后你通过jstack 16556 获取结果
-	 * Found 1 deadlock.
+
+	 Found one Java-level deadlock:
+	 =============================
+	 "TT2":
+	 waiting to lock monitor 0x00007fc410006568 (object 0x0000000782800c18, a java.lang.String),
+	 which is held by "TT1"
+	 "TT1":
+	 waiting to lock monitor 0x00007fc410006358 (object 0x0000000782800c50, a java.lang.String),
+	 which is held by "TT2"
+
+	 Java stack information for the threads listed above:
+	 ===================================================
+
+
+
 	 */
 	@Test
 	public void test1() {
@@ -23,11 +38,18 @@ public class DeadLockDemo {
 		String lockB = "lockB";
 		new Thread(new DeadLockData(lockA, lockB), "TT1").start();
 		new Thread(new DeadLockData(lockB, lockA), "TT2").start();
-		
+
 		int loop = 0;
 		while (Thread.activeCount()>2) {
-			System.out.println("I am waiting here, loop = " + ++loop);
 			try {TimeUnit.SECONDS.sleep(1);} catch (InterruptedException e) {e.printStackTrace();}
+
+			if (loop == 0){
+				Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
+				threadSet.forEach( t -> {
+					System.out.println(t.getName());
+				});
+			}
+			loop++;
 		}
 		System.out.println("Everything finish");
 	}

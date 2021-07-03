@@ -1,0 +1,9 @@
+1, Pattern: Remote Procedure Invocation (RPI)
+REST / gRPC / Apache Thrift
+
+2, Messaging
+Apache Kafka / RabbitMQ
+
+3, Domain-specific protocol
+Email protocols such as SMTP and IMAP
+Media streaming protocols such as RTMP, HLS, and HDS

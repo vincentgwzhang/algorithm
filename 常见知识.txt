@@ -106,3 +106,20 @@ Spring中用到的九种设计模式
 观察者（Observer）如ApplicationListener。
 Spring AOP 就是基于动态代理的
 适配器模式
+
+
+SimpleDateFormat不是线程安全的
+在DateFormat抽象类中有一个Calendar类型的属性calendar，它就是导致SimpleDateFormat线程不安全的关键
+
+
+
+ThreadLocal 工作原理是什么？
+每个线程的内部都维护了一个 ThreadLocalMap，它是一个 Map（key,value）数据格式，key 是一个弱引用，也就是 ThreadLocal 本身，而 value 存的是线程变量的值。
+
+
+How many method of estimation story:
+1) Planning Poker
+2) T-Shirt Sizes
+3) The Bucket System
+4) Large/Uncertain/Small
+5) Dot Voting

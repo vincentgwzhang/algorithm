@@ -1,0 +1,47 @@
+An idempotent operation is an operation, action, or request that can be applied multiple times without changing the result, i.e. the state of the system, beyond the initial application.
+
+HTTP幂等方法，是指无论调用多少次都不会有不同结果的 HTTP 方法。不管你调用一次，还是调用一百次，一千次，结果都是相同的。
+
+HTTP方法名称    是否幂等      是否安全
+OPTIONS       Y           Y
+HEAD          Y           Y
+GET           Y           Y
+
+PUT           Y           N
+DELETE        Y           N
+
+POST          N           N
+PATCH         N           N
+
+凡是改变 resources, no security
+
+
+RESTful API ends up being simply a collection of URIs, HTTP calls to those URIs and some JSON and/or XML representations of resources,
+Each resource in a service suite will have at least one URI identifying it
+
+
+
+
+The REST architectural style describes six constraints.
+六个设计准则分别是： #[Guiding Principles of REST]
+- 统一接口 Uniform Interface: 统一接口准则定义了客户端和服务端之间的接口，简化和分离了框架结构
+- 无状态   Stateless          this means is that the necessary state to handle the request is contained within the request itself, whether as part of the URI, query-string parameters, body, or headers. 
+- 可缓冲
+There are two main HTTP response headers that we can use to control caching behavior:
+Expires: Fri, 20 May 2016 19:20:49 IST====> can up to a year
+Cache-Control: max-age=3600
+Solution:
+1, Use spring cache.
+2, Use Redis
+
+Above solution use AOP also, for GET, it must cacheable
+
+
+- C-S架构 客户服务器分离模式，任何一个客户端与服务器都是可替换的。
+- 分层系统 Layered system 分层的系统，客户端不知道他联系的是不是最终服务器。
+- 按需编码
+
+
+
+HATEOAS
+当一个 REST 客户端访问了最初的REST应用的URI之后，REST 客户端应该可以使用服务器端提供的链接，动态的发现所有的可用的资源和可执行的操作。

@@ -1,0 +1,52 @@
+AMQP（Advanced Message Queuing Protocol，高级消息队列协议）是一个进程间传递异步消息的网络协议。
+
+Publisher -> exchange -> Queue -> Consumer
+
+交换机是用来发送消息的 AMQP 实体。
+
+
+
+RabbitMQ遵循AMQP协议
+Kafka   publish -> subsribe
+
+
+
+
+RabbitMQ具有生产者confirm机制以及消费者的消息应答机制ack。
+Kafka不具有应答机制。
+
+
+RabbitMQ中，在一个队列里面，rabbitmq的消息是严格顺序的，按照先进先出。
+Kafka中，在同一个partition中消息是有序的，但是生产者put到Kafka中数据会分布在不同的partition中，所有总体是无序的。
+
+
+
+kafka强烈的依赖于zookeeper
+
+ActiveMQ:AMQ
+Public-scribe
+
+
+kafka:stream onstorage:data
+active: message broker
+
+
+使用kafka镜像
+
+
+
+
+
+
+默认交换机
+
+直连型交换机（direct exchange）是根据消息携带的路由键（routing key）将消息投递给对应绑定键的队列。   路由规则: Routing Key==Binding Key，严格匹配                            
+扇型交换机（funout exchange）将消息路由给绑定到它身上的所有队列，而不理会绑定的路由键。              路由规则: 把发送到该 Exchange 的消息路由到所有与它绑定的 Queue 中
+headers 类型的 Exchange 不依赖于 routing key 与 binding key 的匹配规则来路由消息，而是根据发送的消息内容中的 headers 属性进行匹配。
+
+
+
+
+
+
+

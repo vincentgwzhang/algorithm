@@ -1,0 +1,16 @@
+Good
+
+1. Highly maintainable and testable
+2. Loosely coupled with other services
+3. Independently deployable
+4. Capable of being developed by a small team
+
+Bad:
+1. Developers must deal with the additional complexity of creating a distributed system
+2. Deployment complexity.
+3. Increased memory consumption.
+
+
+所谓强一致性，即复制是同步的，弱一致性，即复制是异步的。
+
+

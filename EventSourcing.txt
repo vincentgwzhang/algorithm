@@ -1,0 +1,18 @@
+Event Sourcing 
+是把用户直接发起的业务操作转成事件序列，然后异步的处理事件序列，
+好处是可以支持很高的并发，故障时可以很方便的重放，
+并且很自然的有了审计功能，这个做法跟关系数据库的事务日志很像。
+
+
+Event sourcing persists the state of a business entity such an Order or a Customer as a sequence of state-changing events. 
+Whenever the state of a business entity changes, a new event is appended to the list of events. 
+Since saving an event is a single operation, it is inherently atomic
+
+
+Event Sourcing 和 CQRS 核心都是异步事件处理。而 Saga 更进一步，它关注的是多个系统（微服务）之间数据一致性
+
+
+https://zhuanlan.zhihu.com/p/246096231
+https://zhuanlan.zhihu.com/p/102162401
+https://www.zhihu.com/question/363054486/answer/951634231
+https://zhuanlan.zhihu.com/p/142136446

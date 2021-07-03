@@ -12,7 +12,7 @@ public class SemaphoreTest {
 			new Thread(()-> {
 				try {
 					semaphore.acquire();
-					System.out.println(Thread.currentThread().getName() + " [===>]");
+					System.out.println(Thread.currentThread().getName() + " [===>], available now:" + semaphore.availablePermits());
 					
 					TimeUnit.SECONDS.sleep(3);
 					System.out.println(Thread.currentThread().getName() + " [<===]");

@@ -1,0 +1,93 @@
+=====================================================================================================================
+Solution 1:
+
+/**
+ *
+ * PriorityBlockingQueue ==> PriorityBlockingQueue(int initialCapacity, Comparator<? super E> comparator)
+ * ArrayBlockingQueue
+ * LinkedBlockingQueue
+ *
+ * BlockingQueue:
+ * Throws exception: =================> add(e), remove(), element()
+ * Special value   : =================> offer(e), poll(), peak()
+ * Blocks          : =================> put(e), take()
+ * Times out       : =================> offer(e, time, unit), poll(time, unit)
+ *
+ */
+
+
+
+
+=====================================================================================================================
+Solution 2:
+private Lock lock = new ReentrantLock();
+private Condition c1 = lock.newCondition();
+
+c1.await();
+c2.signalAll();
+
+=====================================================================================================================
+Solution 3:
+
+CountDownLatch countDownLatch = new CountDownLatch(6);
+countDownLatch.countDown();
+
+countDownLatch.await();
+
+
+
+
+=====================================================================================================================
+Solution 4:
+
+CyclicBarrier cyclicBarrier = new CyclicBarrier(Thread_Number, Runnable A)
+
+cyclicBarrier.await();====> Write in other thread, so all the thread comes to here, and wait above [Runnable A] finish
+
+
+
+
+=====================================================================================================================
+Solution 5:
+
+Use "jps -l" to list all process, and get the ps_id
+Use "jstack [ps_id]" to get all the detail
+
+
+
+
+
+=====================================================================================================================
+Solution 6:
+
+Semaphore semaphore = new Semaphore(3); // 3 permits!!!!
+semaphore.acquire(); // you can go inside once you have permits
+semaphore.release();
+
+semaphore.availablePermits()
+
+
+
+
+
+
+=====================================================================================================================
+Solution 7:
+
+AtomicReference<Thread> atomicReference = new AtomicReference<>();
+atomicReference.compareAndSet(null, t)
+
+AtomicInteger
+
+=====================================================================================================================
+Solution 8:
+
+ExecutorService executorService = Executors.newFixedThreadPool(2);
+
+Callable<WorkResult> worker = new MyCallable("NAME");
+Future<WorkResult> future = executorService.submit(worker);
+
+executorService.shutdown();
+
+
+

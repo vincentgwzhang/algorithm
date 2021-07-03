@@ -1,12 +1,17 @@
 LRU是Least Recently Used => 最近最少使用
 基本思想：如果数据最近被访问过，那么将来被访问的几率也更高。
 
-
+When a cached key be accessed, then put it in the end of the queue, when need to eliminate, delete the head of the queue
+Disadvantage:
 
 LFU是Least Frequency Used => 最不经常使用算法
 基本思想：如果数据过去被访问多次，那么将来被访问的频率也更高。
 缺点   ：无法对一个拥有最初高访问率之后长时间没有被访问的条目缓存负责。
 
+For every cached key, statistic their access times, then eliminate the lowest one.
+Disadvantage: Can not handle the time, maybe some cache new join then deleted
+
+=================================================================================================
 
 LRU的淘汰规则是基于访问时间 (放置时间越久，而没有用过的，首先删除)
 LFU的淘汰规则是基于访问次数 (不管放置时间，最少用过的，首先删除)

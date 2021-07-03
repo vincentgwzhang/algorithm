@@ -15,7 +15,7 @@ public class LockStudyDemo {
 	public void testLock01() {
 		new Thread(() -> {LockStudyDemoBean.method01();}, "TT1" ).start(); 
 		try {TimeUnit.SECONDS.sleep(2);} catch (InterruptedException e) {}
-		for(int i = 0; i < 10; i ++) {new Thread(() -> {LockStudyDemoBean.method02();}, "YY" + i ).start();}
+		for(int i = 0; i < 10; i ++) {new Thread(() -> {LockStudyDemoBean.method01();}, "YY" + i ).start();}
 		
 		while(Thread.activeCount() > 2) {
 			try {

@@ -313,12 +313,13 @@ ARG <name> [=<default value>]
 10.ENTRYPOINT
 说明：指定镜像的默认入口命令，该入口命令会在启动容器时作为根命令执行，所以传入值作为该命令的参数。
 格式：
-ENTRYPOINT ["executable","param1","param2"] exec调用执行
-ENTRYPOINT command param1 param2 shell中执行
+ENTRYPOINT ["executable","param1","param2"] exec调用执行; 这个叫 exec 格式
+ENTRYPOINT command param1 param2 shell中执行            ; 这个叫 shell 格式
 
 此时，CMD指令指定值将作为根命令的参数。
 每个Dockerfile中只能有一个ENTRYPOINT，当指定多个时，只有最后一个有效。
-在运行时，可以被 --entrypoint参数覆盖掉。
+注意 shell 格式是不推荐的，因为Docker这层会传参失败
 
 ===========================================================================================
 
+Avoid docker images

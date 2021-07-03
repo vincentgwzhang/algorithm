@@ -1,0 +1,11 @@
+Event sourcing
+
+A service command typically needs to update the database and send messages/events. 
+
+For example, a service that participates in a saga needs to atomically update the database and sends messages/events. 
+
+Similarly, a service that publishes a domain event must atomically update an aggregate and publish an event. 
+
+The database update and sending of the message must be atomic in order to avoid data inconsistencies and bugs. 
+
+However, it is not viable to use a distributed transaction that spans the database and the message broker to atomically update the database and publish messages/events.

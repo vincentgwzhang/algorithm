@@ -5,6 +5,22 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ *
+ * PriorityBlockingQueue ==> PriorityBlockingQueue(int initialCapacity, Comparator<? super E> comparator)
+ * ArrayBlockingQueue
+ * LinkedBlockingQueue
+ *
+ * BlockingQueue:
+ * Throws exception: =================> add(e), remove(), element()
+ * Special value   : =================> offer(e), poll(), peak()
+ * Blocks          : =================> put(e), take()
+ * Times out       : =================> offer(e, time, unit), poll(time, unit)
+ *
+ */
+
+
+
 public class ComplicateDemo {
 	public static void main(String[] args) throws Exception {
 		ComplicateDemoResource resource = new ComplicateDemoResource(new ArrayBlockingQueue<>(10));

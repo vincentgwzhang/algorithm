@@ -1,0 +1,4 @@
+Representational state transfer (REST) is a software architectural style which uses a subset of HTTP.[1]
+It is commonly used to create interactive applications that use Web services.
+
+

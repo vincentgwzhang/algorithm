@@ -1,0 +1,13 @@
+Refactoring a Monolith into Microservices笔记
+
+教训：One strategy to not use is the “Big Bang” rewrite. 将单体应用程序彻底重写(重构)为微服务架构，是不可取的。
+
+1, 请求的路由器（request router）
+2, 胶水代码（glue code）
+
+Strategy 1 – Stop continue development
+Strategy 2 – Split Frontend and Backend
+Strategy 3 – Extract Services
+ - 先提取简单的模块。
+ - 对待提取的模块，按照优先级进行排名 (提取出经常被改动的模块；提取出对资源要求颇高的模块；提取那些以异步消息通信为主要通信手段的模块)
+ - 

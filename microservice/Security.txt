@@ -1,0 +1,14 @@
+1. 遗漏了对资源从属关系的检查, 一般而言用户只能查看自己的用户信息
+2. HTTP响应中缺失必要的 Security Headers
+
+X-Frame-Options
+X-Frame-Options: DENY明确告知浏览器，不要把当前HTTP响应中的内容在HTML Frame中显示出来。
+
+
+X-Content-Type-Options
+X-Content-Type-Options就是专门用来解决这个问题的Header。通过将其设置为X-Content-Type-Options: nosniff，浏览器将不再自作主张的推断HTTP响应内容的类型，而是严格按照响应中Content-Type所指定的类型来解析响应内容。
+
+
+3. 会说话的ID
+4. 返回多余的数据
+5. API缺乏速率限制的保护

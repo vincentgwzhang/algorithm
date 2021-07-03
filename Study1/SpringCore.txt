@@ -20,6 +20,28 @@ Join Point
 - A joinpoint is a candidate point in the Program Execution of the application where an aspect can be plugged in.
 - 例子中，所有的EmployeeCRUDAspect函数就是一个 joint point
 
+
+@Pointcut("execution(public * *(..))")
+@Pointcut("execution(* set*(..))")
+@Pointcut("execution(* com.xyz.service.AccountService.*(..))")
+@Pointcut("execution(* com.xyz.service.*.*(..))")
+@Pointcut("within(com.xyz.service.*)")//within the service package
+@Pointcut("within(com.xyz.service..*)")//within the service package or one of its sub-packages
+@Pointcut("@annotation(org.springframework.transaction.annotation.Transactional)")//within the service package or one of its sub-packages
+private void anyPublicOperation() {}
+
+@Pointcut("within(com.xyz.myapp.trading..*)")
+private void inTrading() {}
+
+@Pointcut("anyPublicOperation() && inTrading()")
+private void tradingOperation() {}
+
+
+
+
+
+
+
 Advice
 - Code to be executed at each selected Join Point 
 (例子中，1 match 1, join point, for example, before, after, after throwing ...)

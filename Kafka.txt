@@ -1,0 +1,49 @@
+Apache Kafka是分布式发布-订阅消息系统 / Public-scribe
+
+以下组件:
+话题（Topic）：是特定类型的消息流。消息是字节的有效负载（Payload），话题是消息的分类名或种子（Feed）名。
+生产者（Producer）：是能够发布消息到话题的任何对象。
+服务代理（Broker）：已发布的消息保存在一组服务器中，它们被称为代理（Broker）或Kafka集群。
+消费者（Consumer）：可以订阅一个或多个话题，并从Broker拉数据，从而消费这些已发布的消息。
+
+Producer
+-> Broker1 (topic1, topic 2), Broker2 (topic3, topic 4)
+-> Consumer
+
+Message storage:
+topic --include-->
+one or more partition --include-->
+one or more segments
+
+
+broker收到发布消息往对应partition的最后一个segment上添加该消息，
+当某个segment上的消息条数达到配置值或消息发布时间超过阈值时，
+segment上的消息会被flush到磁盘，只有flush到磁盘上的消息订阅者才能订阅到，
+segment达到一定的大小后将不会再往该segment写数据，broker会创建新的segment。
+
+
+
+Kafka删除策略
+1）N天前的删除。
+2）保留最近的MGB数据。
+
+
+负载均衡
+1）producer可以自定义发送到哪个partition的路由规则。默认路由规则：hash(key)%numPartitions，如果key为null则随机选择一个partition。
+2）自定义路由：如果key是一个user id，可以把同一个user的消息发送到同一个partition，这时consumer就可以从同一个partition读取同一个user的消息。
+
+
+Consumer Position (statless, will not store the )
+1)大部分消息系统由broker记录哪些消息被消费了，但Kafka不是。
+2)Kafka由consumer控制消息的消费，consumer甚至可以回到一个old offset的位置再次消费消息。
+
+
+5、消息传送机制
+对于JMS实现,消息传输担保非常直接:有且只有一次(exactly once).在kafka中稍有不同:
+1) at most once: 最多一次,这个和JMS中"非持久化"消息类似.发送一次,无论成败,将不会重发.
+2) at least once: 消息至少发送一次,如果消息未能接受成功,可能会重发,直到接收成功.
+3) exactly once: 消息只会发送一次.
+at most once: 消费者fetch消息,然后保存offset,然后处理消息;当client保存offset之后,但是在消息处理过程中出现了异常,导致部分消息未能继续处理.那么此后"未处理"的消息将不能被fetch到,这就是"at most once".
+at least once: 消费者fetch消息,然后处理消息,然后保存offset.如果消息处理成功之后,但是在保存offset阶段zookeeper异常导致保存操作未能执行成功,这就导致接下来再次fetch时可能获得上次已经处理过的消息,这就是"at least once"，原因offset没有及时的提交给zookeeper，zookeeper恢复正常还是之前offset状态.
+exactly once: kafka中并没有严格的去实现(基于2阶段提交,事务),我们认为这种策略在kafka中是没有必要的.
+通常情况下"at-least-once"是我们搜选.(相比at most once而言,重复接收数据总比丢失数据要好).
