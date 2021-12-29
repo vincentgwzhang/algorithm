@@ -14,14 +14,14 @@ public class VolatileDemo {
 		AtomicStampedReference<Integer> atomicStampedReference = new AtomicStampedReference<>(100, 5001);
 		new Thread(() ->  {
 			System.out.println(atomicStampedReference.getStamp());//5001
-			System.out.println("CAS = " + atomicStampedReference.compareAndSet(100, 101, 5001, 5001) + ", value = " + atomicStampedReference.getReference());
-			System.out.println("CAS = " + atomicStampedReference.compareAndSet(101, 100, 5001, 5001) + ", value = " + atomicStampedReference.getReference());
+			System.out.println("CAS [1]= " + atomicStampedReference.compareAndSet(100, 101, 5001, 5005) + ", value = " + atomicStampedReference.getReference());
+			System.out.println("CAS [2]= " + atomicStampedReference.compareAndSet(101, 100, 5005, 5001) + ", value = " + atomicStampedReference.getReference());
 		}, "T3").start();;
 		
 		new Thread(() ->  {
 			try {TimeUnit.SECONDS.sleep(1);} catch (InterruptedException e) {}
 			System.out.println(atomicStampedReference.getStamp());
-			System.out.println("CAS = " + atomicStampedReference.compareAndSet(100, 108, 5001, 5002) + ", value = " + atomicStampedReference.getReference());
+			System.out.println("CAS [3]= " + atomicStampedReference.compareAndSet(100, 108, 5001, 5002) + ", value = " + atomicStampedReference.getReference());
 		}, "T4").start();;
 		
 		while(Thread.activeCount()>2) {
@@ -91,8 +91,8 @@ public class VolatileDemo {
 		 * 为什么呢？很奇怪
 		 */
 		while (data.number == 0) {
-			//System.out.println("Main thread identify number still 0");
-			//try {TimeUnit.SECONDS.sleep(1);} catch (Exception e) {}
+			System.out.println("Main thread identify number still 0");
+			try {TimeUnit.SECONDS.sleep(1);} catch (Exception e) {}
 		}
 		
 		System.out.println(Thread.currentThread().getName() + " run finish");

@@ -24,7 +24,9 @@ CONS for Microservice:
 
 
 微服务如何通信
-1, 无代理模式
+1. Communication style: Synchronous or Asynchronous
+Synchronous: Http or gRPC protocal
+Asynchronous: AMQP
 
 POS:
 - 低延迟

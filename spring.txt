@@ -12,8 +12,11 @@ Spring中的bean的作用域有哪些？
 ====================================================================================================================================================================
 
 What is IOC
-As the name implies Inversion of control means now we have inverted the control of creating the object from our own using new operator to container or framework.
-Now it’s the responsibility of container to create object as required.
+As the name implies Inversion of control
+1) means inverted the control of creating the object
+2) By object container
+
+
 
 为什么用 field injection 而不是 setter injection? 因为用 setter injection 就不能在测试的时候用 @Autowired
 

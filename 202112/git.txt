@@ -1,0 +1,34 @@
+假设场景： 如果经过下面三步以后，也即:
+1, 修改XXXX文件
+2, git add .
+3, git commit
+
+如果我 git reset --soft, 那么结果就是相当于我没有做 git commit 那步，然后我重新 git commit 即可
+如果我 git reset --mixed (其实就是 git reset, mixed 是默认), 那么结果相当于我没有做 git add 和 git commit, 弹回来了，重新修改和重新 commit 也可以
+如果我 git reset --hard 的说话，那么就直接连修改文件也省了，直接自动删除上一步, 连修改文件的那部分也被删除了
+
+git reset --hard HEAD~3 就是把之前三个版本都删除
+
+==========================================================================
+https://blog.csdn.net/hudashi/article/details/7664631/
+
+git rebase
+如果遇到conflict, 那么 
+git rebase --continue
+或者
+git rebase --abort
+
+
+git rebase 其实是相当与
+1, 暂时撤销我所有的改变
+2, 重新把原本的branch 的补丁打上
+3, 再一条一条加会我的commit
+
+======================================================================================================================
+Git workflow 的流程:
+1, [Master / Main]The main branch contains a version of the code that is in production.
+2, [Develop] The develop branch contain a relative stable version, all the feature and bugfix branch create from this branch.
+3, [feature] The feature branch is for develop new feature, and finally will merge to develop branch.
+4, [bugfix]  For not urgent bug fix, and finally will merge to develop branch.
+5, [release] Create from develop branch, after testing, need to merge back to [develop] and [master] branch, before release to production.
+6, [hotfix]  Create from main/master branch, after that need to merge to [develop] and [master] branch

@@ -3,7 +3,7 @@ Refactoring a Monolith into Microservices笔记
 教训：One strategy to not use is the “Big Bang” rewrite. 将单体应用程序彻底重写(重构)为微服务架构，是不可取的。
 
 1, 请求的路由器（request router）
-2, 胶水代码（glue code）
+2, 胶水代码（glue code）胶合码是将不兼容的程序或软件组件组合起来的计算机代码
 
 Strategy 1 – Stop continue development
 Strategy 2 – Split Frontend and Backend

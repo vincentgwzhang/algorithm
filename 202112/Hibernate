@@ -1,0 +1,32 @@
+Hibernate中get和load有什么不同之处? 
+
+Get 方法， 在缓存中没有找到相应的对象，get将会直接访问数据库并返回一个完全初始化好的对象，而这个过程有可能会涉及到多个数据库调用；
+load方法,  在缓存中没有发现对象的情况下，只会返回一个代理对象，只有在对象getId()之外的其它方法被调用时才会真正去访问数据库，这样就能在某些情况下大幅度提高性能。
+
+==========================================================================================================================================================
+
+Hibernate中save、persist和saveOrUpdate这三个方法的不同之处？
+
+1, save()只能INSERT记录，返回值是一个Serializable对象
+2, saveOrUpdate()可以进行 记录的INSERT和UPDATE。
+3, persist()方法返回值为void
+
+==========================================================================================================================================================
+
+
+Hibernate中transient、persistent、detached对象三者之间有什么区别？ 
+
+在Hibernate中，对象具有三种状态：transient、persistent和detached。
+1) 同Hibernate的session有关联的对象是persistent对象。
+
+2) 当下却没有关联关系了，这样的对象就是detached的对象。
+调用 update() / saveOrUpdate()方法，重新将该detached对象同相应的seesion建立关联关系
+
+3) Transient对象指的是新建的持久化类的实例，它还从未同Hibernate的任何Session有过关联关系。
+调用persist() / save()方法，将transient对象变成persistent对象。
+
+
+
+
+
+

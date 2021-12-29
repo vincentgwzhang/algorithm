@@ -1,5 +1,6 @@
 LRU是Least Recently Used => 最近最少使用
 基本思想：如果数据最近被访问过，那么将来被访问的几率也更高。
+也就是说，会替换掉最久没有被访问过的
 
 When a cached key be accessed, then put it in the end of the queue, when need to eliminate, delete the head of the queue
 Disadvantage:
