@@ -56,14 +56,14 @@ class ComplicateDemoResource {
 		this.blockingQueue = blockingQueue;
 		System.out.println(blockingQueue.getClass().getName());
 	}
-	
+
 	public void myProduce() throws Exception {
 		String data = null;
 		boolean returnValue;
-		while(FLAG) {
+		while (FLAG) {
 			data = atomicInteger.incrementAndGet() + "";
 			returnValue = blockingQueue.offer(data, 2L, TimeUnit.SECONDS);
-			if(returnValue) {
+			if (returnValue) {
 				System.out.println(Thread.currentThread().getName() + " offer " + data + " success");
 			} else {
 				System.out.println(Thread.currentThread().getName() + " offer " + data + " fail");
@@ -72,17 +72,18 @@ class ComplicateDemoResource {
 		}
 		System.out.println(Thread.currentThread().getName() + " Loop break out");
 	}
-	
+
 	public void myConsume() throws Exception {
 		String data = null;
-		while(FLAG) {
+		while (FLAG) {
 			data = blockingQueue.poll(2L, TimeUnit.SECONDS);
-			if(data == null || data.contentEquals("")) {
+			if (data == null || data.contentEquals("")) {
 				System.out.println(Thread.currentThread().getName() + " consume end");
 			} else {
 				System.out.println(Thread.currentThread().getName() + " consume data:" + data);
 			}
 		}
+		System.out.println(Thread.currentThread().getName() + " Loop break out");
 	}
 	
 	public void stop() {

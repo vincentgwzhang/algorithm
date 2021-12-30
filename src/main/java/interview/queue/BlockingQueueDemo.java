@@ -40,9 +40,9 @@ public class BlockingQueueDemo {
 		//take has blocking status
 		
 		System.out.println(blockQueue.offer("a", 2L, TimeUnit.SECONDS));//过两秒都无法塞进去的话就判false
-		System.out.println(blockQueue.offer("a", 2L, TimeUnit.SECONDS));
-		System.out.println(blockQueue.offer("a", 2L, TimeUnit.SECONDS));
-		System.out.println(blockQueue.offer("a", 2L, TimeUnit.SECONDS));
+		System.out.println(blockQueue.offer("b", 2L, TimeUnit.SECONDS));
+		System.out.println(blockQueue.offer("c", 2L, TimeUnit.SECONDS));
+		System.out.println(blockQueue.offer("d", 2L, TimeUnit.SECONDS));
 		System.out.println(blockQueue.poll(2L, TimeUnit.SECONDS));//过两秒都无法拿的话就null
 		System.out.println(blockQueue.poll(2L, TimeUnit.SECONDS));//过两秒都无法拿的话就null
 		System.out.println(blockQueue.poll(2L, TimeUnit.SECONDS));//过两秒都无法拿的话就null
