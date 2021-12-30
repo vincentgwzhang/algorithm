@@ -1,0 +1,12 @@
+CQRS:
+命令查询分离 (Command Query Separation,CQS)
+
+命令(Command):不返回任何结果(void)，但会改变对象的状态。
+查询(Query):返回结果，可是不会改变对象的状态，对系统没有反作用。
+
+看 DDD_CQRS 的图片，所谓的 CQRS, 就是，读写分离，写的时候和读的时候设计是完全不一样的。
+When you write, first go though the interface, and in application leyer to change into different [Command], and let domain
+entities aware, and go though their logic, then save the event in event source. and then send this event to event handler,
+and update the data base.
+
+But you read, you only need to construct standard [Query], after query layer, then direct read the database.

@@ -13,14 +13,22 @@ Techniqualy:
 
 
 Hexagonal Architecture
-Allow an application to equally be driven by users, programs, automated test or batch scripts, and to be developed and tested in isolation from its eventual run-time devices and databases.
+Allow an application to equally be driven by users, programs, automated test or batch scripts,
+and to be developed and tested in isolation from its eventual run-time devices and databases.
 
 ========================================================================================================================
 
 DDD 分层架构
 
-以领域模型为核心，实行分层架构，内部核心业务逻辑与外部应用、资源隔离并解耦
+Domain -> Application -> Interface -> Infrastructure
+经典的分层:
+用户接口层：User interface              #主要用于向用户展示信息，并接受用户指令。
+应用层：    Application                 #相当于 controller 层，对外提供接口，对内调用领域层，不包含业务逻辑，是领域模型的门面。
+领域层：    Domain                      #esponsible for representing concepts of the business, information about the business situation, and business rules
+基础设施层：Infrastructure              #为其他层提供通用的技术能力，如：层间的通信、持久化机制等。
 
+
+以领域模型为核心，实行分层架构，内部核心业务逻辑与外部应用、资源隔离并解耦
 
 实体（Entity）:  有ID, 有唯一标识有状态的对象，例如订单
 值对象（Value Object）: 没有唯一标识符的实体
@@ -30,8 +38,4 @@ DDD 分层架构
 
 其实就是让实体（entity）拥有行为，把 service 的动作放到 entity 上面，面向业务
 
-经典的分层:
-用户接口层：User interface              #主要用于向用户展示信息，并接受用户指令。
-应用层：    Application                 #相当于 controller 层，对外提供接口，对内调用领域层，不包含业务逻辑，是领域模型的门面。
-领域层：    Domain                      #esponsible for representing concepts of the business, information about the business situation, and business rules
-基础设施层：Infrastructure              #为其他层提供通用的技术能力，如：层间的通信、持久化机制等。
+

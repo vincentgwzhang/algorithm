@@ -9,7 +9,6 @@ public class DongFnegCarFactory extends CarFactory
     @Override
     Car createCar(String carName)
     {
-        function1();
         if (carName.equalsIgnoreCase("D1"))
         {
             return new Dongfeng1();

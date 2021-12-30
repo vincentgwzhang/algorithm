@@ -10,9 +10,4 @@ public abstract class CarFactory
 
     }
 
-    public void function1() {
-
-    }
-
-
 }

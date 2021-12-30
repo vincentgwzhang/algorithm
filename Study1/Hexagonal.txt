@@ -1,23 +1,23 @@
-Theological:
-
-1, Hexagonal architecture is a model of designing software applications around domain logic to isolate it from external factors.
-2, In a hexagonal architecture, this service is an adapter that implements the port
-3, Hexagonal architecture defines the inside and the outside part.
-4, Application layer is responsible for orchestrating the execution of domain logic
-
-
-our application into three layers;
-1, domain      ===================> core
-2, application ===================> be called
-3, Adapters    ===================> basic connect
-
-
-
-Compare to DDD
-1, Domain
-2, Application
-3, Presentation
-4, Instructure
-
+The hexagonal architecture, or ports and adapters architecture
+定义：
+It aims at creating loosely coupled application components
+that can be easily connected to their software environment by means of ports and adapters.
+原理：
+When event to port, adapters changed to application, and application is not aware any device outside
+when application output, will send the message to adapters by ports
 
 洋葱架构 = 六边形（Hexagonal）架构
+重点：[六边形架构遵循了分层系统的所有约束与特性，其实用端口和适配器架构这个名称更合适，因为六边形的边的数目并没有任何意义。]
+
+六边形架构的三个层
+1) 领域层
+领域模型包含了所有的应用逻辑与规则。
+领域层中不会直接引用技术实现，例如 HTTP 上下文或数据库调用，这样就能够确保在技术方面的改动不会影响到领域层面。
+
+2) 端口层
+负责接收与用例相关的所有请求，这些请求负责在领域层中协调工作。
+端口层在端口内部作为领域层的边界，在端口外部则扮演了外部实体的角色。
+
+3) 适配器层
+这一层的技术实现负责以某种格式接收输入、及产生输出。
+在适配器层不存在领域逻辑，它的唯一职责就是在外部世界与领域层之间进行技术性的转换。

@@ -1,0 +1,18 @@
+这里探讨 Event Driven 和 Event sourcing 的区别
+
+Purpose:
+Event sourcing is an alternative to traditional persistence strategies, with the purpose of keeping history.
+Event driven architecture is a distributed asynchronous architecture pattern used to produce highly scalable applications.
+
+Scope:
+Event sourcing is usually applied in a single application/system, maybe implemented as services; however usually sharing the same storage.
+
+
+Data storage:
+Event sourcing has a central event store.
+Event driven architecture distributed so each component (or event processors) is decoupled and most likely to have their own storage.
+
+
+Testability
+Event sourcing is somehow more easier to test because it focus on one main component, which contain the event source DB
+And event driven need isolation testing

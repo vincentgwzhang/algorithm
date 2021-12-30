@@ -1,7 +1,5 @@
 package algorithm.sorting;
 
-import org.junit.Test;
-
 /**
  *
  * 希尔排序说明:
@@ -29,7 +27,7 @@ import org.junit.Test;
  * PS: 无论哪一个阶段，无论初始 index 从什么时候开始，都是从 index 到 array.length
  *
  */
-public class DibakdShellSort {
+public class DibakdShellSort extends SortInterface {
 
     public void coreAlorithm(int[] arr) {
         int temp = 0;
@@ -45,16 +43,12 @@ public class DibakdShellSort {
                         temp = arr[left];
                         arr[left] = arr[right];
                         arr[right] = temp;
+                    } else {
+                        break; // 因为之前已经排好序了
                     }
                 }
             }
         }
-    }
-
-    @Test
-    public void test1() {
-        int[] arr = new int[]{3, 0, 11, 10, 1, 8, 12, 7, 2, 13, 5, 14, 4, 9, 15, 6};
-        coreAlorithm(arr);
     }
 
 }

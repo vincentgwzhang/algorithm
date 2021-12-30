@@ -1,11 +1,5 @@
-Event sourcing
+Event sourcing 的定义，要记住的三句说话
 
-A service command typically needs to update the database and send messages/events. 
-
-For example, a service that participates in a saga needs to atomically update the database and sends messages/events. 
-
-Similarly, a service that publishes a domain event must atomically update an aggregate and publish an event. 
-
-The database update and sending of the message must be atomic in order to avoid data inconsistencies and bugs. 
-
-However, it is not viable to use a distributed transaction that spans the database and the message broker to atomically update the database and publish messages/events.
+Event Sourcing is an alternative way to persist data.  | Event sourcing 是另类的保存数据的方法
+traditional state-oriented application only keeps the latest version of the entity state, | 相对于之保留最终状态的常规方法
+Event Sourcing stores each state change as a separate record called an event. | 每次变化，event sourcing 都记录为 event

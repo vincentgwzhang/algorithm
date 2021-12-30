@@ -1,5 +1,10 @@
 package algorithm.sorting;
 
+/**
+ *
+ * 时间复杂度 : o(n^2), 空间复杂度 : o(1)
+ *
+ */
 public class ChooseSorting extends SortInterface {
 
     //核心思想：

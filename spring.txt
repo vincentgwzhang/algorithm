@@ -20,6 +20,15 @@ As the name implies Inversion of control
 
 为什么用 field injection 而不是 setter injection? 因为用 setter injection 就不能在测试的时候用 @Autowired
 
+Spring 用了那些模式
+1, Singleton: 大部分的 bean 都是单例
+2, Factory  : Spring IOC use factory mode to create bean
+3, Proxy    : Spring AOP use proxy mode
+4, Adapter  : Spring MVC, the HandlerAdapter
+5, Decorator: 动态地给一个对象添加一些额外的职责。
+6, Observer : ApplicationEvent
+
+
 
 What is AOP
 AOP: Aspect oriented programming

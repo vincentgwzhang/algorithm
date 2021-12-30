@@ -13,9 +13,9 @@ public class ProxyFactory {
 
     public Object getProxyInstance() {
         return Proxy.newProxyInstance(target.getClass().getClassLoader(), target.getClass().getInterfaces(), (proxy, method, args) -> {
-            System.out.println("代理开始");
+            System.out.println("代理开始 1");
             Object value = method.invoke(target, args);
-            System.out.println("代理开始");
+            System.out.println("代理开始 2");
             return value;
         });
     }

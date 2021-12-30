@@ -13,7 +13,7 @@ import org.junit.Test;
  * 2）有序队列（只有一个元素）
  * 
  * 然后逐步把每个元素从无序队列拉到有序队列
- * 时间复杂度：O(n^2)，最优时间复杂度：O(n),平均时间复杂度：O(n^2)
+ * 时间复杂度 : o(n^2), 空间复杂度 : o(1)
  */
 public class InsertSortingDemo extends SortInterface {
 	
@@ -21,10 +21,14 @@ public class InsertSortingDemo extends SortInterface {
 		for(int index = 1; index < arr.length; index ++) {
 			int currentValue = arr[index];
 			int cursor = index - 1;
-			while( cursor >= 0 && currentValue < arr[cursor] ) {
-				arr[cursor+1] =  arr[cursor];
-				arr[cursor] = currentValue;
-				cursor --;
+			while( cursor >= 0 ) {
+				if (currentValue < arr[cursor]) {
+					arr[cursor+1] =  arr[cursor];
+					arr[cursor] = currentValue;
+					cursor --;
+				} else {
+					break;
+				}
 			}
 		}
 	}
