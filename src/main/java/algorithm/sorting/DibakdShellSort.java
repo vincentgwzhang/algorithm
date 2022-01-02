@@ -26,6 +26,7 @@ package algorithm.sorting;
  *
  * PS: 无论哪一个阶段，无论初始 index 从什么时候开始，都是从 index 到 array.length
  *
+ * 时间复杂度： O(nlogn)
  */
 public class DibakdShellSort extends SortInterface {
 
