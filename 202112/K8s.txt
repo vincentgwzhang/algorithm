@@ -1,0 +1,342 @@
+http://dockone.io/article/2434304
+
+1. What is Kubernetes?
+
+It is a container orchestration tool or system that is used to automate tasks for 
+ * monitoring
+ * scaling
+ * deployment 
+of containerized applications
+
+------------------------------------------------------------------------------------------------
+
+2, How are Kubernetes and Docker related?
+
+Docker is used for package settings and dependency the applications needs to run into a container. 
+Kubernetes allows for the manual linking containers, running on multiple hosts that have been created using Docker. 
+
+
+第一章
+*************************************************************************************************************
+Controller Manager简介
+Controller Manager作为集群内部的管理控制中心，
+    负责集群内的Node、
+    Pod副本、
+    服务端点（Endpoint）
+    命名空间（Namespace）
+    服务账号（ServiceAccount）
+    资源定额（ResourceQuota）的管理，
+当某个Node意外宕机时，Controller Manager会及时发现并执行自动化修复流程，确保集群始终处于预期的工作状态。
+
+Controller manager controlls:
+[
+* Replication Controller
+* Node Controller
+* ResourceQuota Controller
+* Namespace Controller
+* ServiceAccount Controller
+* Token Controller
+* Service Controller
+* Endpoint Controller
+]
+
+
+*************************************************************************************************************
+Replication Controller
+
+只有当Pod的重启策略是Always的时候（RestartPolicy=Always），副本控制器才会管理该Pod的操作（创建、销毁、重启等）如果一个Pod失败重启，重启的Node由Replication Controller决定，不一定是原先的Node。
+职责:
+1, 确保集群中有且仅有N个Pod实例，N是RC中定义的Pod副本数量。
+2, 通过调整RC中的spec.replicas属性值来实现系统扩容或缩容。
+3, 通过改变RC中的Pod模板来实现系统的滚动升级。
+
+*************************************************************************************************************
+ResourceQuota Controller
+
+1.容器级别：对CPU和Memory进行限制
+2.Pod级别：对一个Pod内所有容器的可用资源进行限制
+3.Namespace级别：包括
+
+
+
+*************************************************************************************************************
+Namespace Controller
+
+用户通过API Server可以创建新的Namespace并保存在etcd中，Namespace Controller定时通过API Server读取这些Namespace信息。
+如果Namespace被API标记为优雅删除（即设置删除期限，DeletionTimestamp）,则将该Namespace状态设置为“Terminating”,并保存到etcd中。
+同时Namespace Controller删除该Namespace下的ServiceAccount、RC、Pod等资源对象。
+
+
+
+
+
+*************************************************************************************************************
+Endpoint Controller
+
+Endpoints表示了一个Service对应的所有Pod副本的访问地址，
+而Endpoints Controller负责生成和维护所有Endpoints对象的控制器。它负责监听Service和对应的Pod副本的变化。
+
+
+*************************************************************************************************************
+Service Controller
+
+Service Controller是属于kubernetes集群与外部的云平台之间的一个接口控制器
+
+
+
+
+
+第二章 POD
+Pod是Kubernetes调度的最小单元。一个Pod可以包含一个或多个容器，因此它可以被看作是内部容器的逻辑宿主机。Pod的设计理念是为了支持多个容器在一个Pod中共享网络和文件系统。
+
+下面是一个POD 的模板
+
+apiVersion: v1               # apiVersion： 使用哪个版本的Kubernetes API来创建此对象
+kind: Pod                    # kind：要创建的对象类型，例如Pod，Deployment等
+metadata:                    # metadata：用于唯一区分对象的元数据，包括：name，UID和namespace
+  name: test-pod1
+  labels:
+    app: nginx               # labels：是一个个的key/value对，定义这样的label到Pod后，其他控制器对象可以通过这样的label来定位到此Pod，从而对Pod进行管理。
+spec:                        # spec： 其它描述信息，包含Pod中运行的容器，容器中运行的应用等等。
+  containers:
+  - name: test
+    image: nginx:latest
+    ports:
+    - containerPort: 80
+
+
+
+[Command] : kubectl apply -f pod.yml
+
+pod的状态通常有五种:
+* Pending：       Pod定义正确，提交到Master，但其所包含的容器镜像还未完全创建。
+* Running：       Pod已经被分配到某个Node上，并且所有的容器都被创建完毕，至少有一个容器正在运行中，或者有容器正在启动或重启中。
+* Succeeded：     Pod中所有的容器都成功运行结束，并且不会被重启。这是Pod的一种最终状态。
+* Failed：        Pod中所有的容器都运行结束了，其中至少有一个容器是非正常结束的（exit code不是0）。这也是Pod的一种最终状态。
+* Unknown：       无法获得Pod的状态，通常是由于无法和Pod所在的Node进行通信。
+
+pod的restart policy
+* Always：        只当容器失败时，由kubelet自动重启该容器
+* OnFailure：    当容器终止运行且退出码不为0时，由kubelet自动重启该容器
+* Never：         无论容器运行状态如何，kubelet都不会重启该容器。
+
+使用restart policy 的注意事项
+1, Job。通常用于管理一定会结束的Pod。如果希望Pod被Job controller管理，那么*restartPolicy必须指定为 [OnFailure] 或 [Never]。
+2, ReplicationController，ReplicaSet和Deployment。用于管理永远处于运行状态的Pod。如果希望Pod被此类controller管理，那么restartPolicy必须指定为 [Always]。
+3, DaemonSet。它能够保证你的Pod在每一台Node都运行一个副本。
+
+
+
+Create POD 的流程
+1, 客户端提交Pod的配置信息（可以是yaml文件定义的信息）到kube-apiserver。
+2, Apiserver收到指令后，通知给controller-manager创建一个资源对象。
+3, Controller-manager通过api-server将Pod的配置信息存储到etcd数据中心中。
+4, Kube-scheduler检测到Pod信息会开始调度预选，会先过滤掉不符合Pod资源配置要求的节点，然后开始调度调优，主要是挑选出更适合运行Pod的节点，然后将Pod的资源配置单发送到Node节点上的kubelet组件上。
+5, Kubelet根据scheduler发来的资源配置单运行Pod，运行成功后，将Pod的运行信息返回给scheduler，scheduler将返回的Pod运行状况的信息存储到etcd数据中心。
+
+
+1, yaml -> kube-apiserver
+2, kube-apiserver -> controller-manager
+3, controller-manager -> etcd DB
+4, Kube-Scheduller -> select best pod -> kubelet -> start port -> kube-sceduler -> etcd db
+
+
+
+
+
+kubelet定期执行LivenessProbe探针来诊断容器的健康状态，通常有以下三种方式：
+1, ExecAction       ：在容器内执行一个命令，若返回码为0，则表明容器健康。
+2, TCPSocketAction  ：通过容器的IP地址和端口号执行TCP检查，若能建立TCP连接，则表明容器健康。
+3, HTTPGetAction    ：通过容器的IP地址、端口号及路径调用HTTP Get方法，若响应的状态码大于等于200且小于400，则表明容器健康。
+
+
+
+
+
+
+
+
+
+
+第三章 Label Selector（标签选择器）
+
+带有label的对象创建好后，可以通过label selector来引用这些对象。
+通常通过描述文件中的spec.selector字段来指定Label，从而为K8S寻找所有包含指定label的对象进行关联管理。
+K8S目前支持两种类型的label selector标签选择器：
+
+************************************************************************************************************************************
+基于等式的Selector（Equality-based）
+基于集合的Selector（Set-based）
+
+基于等式的 （Equality-based）例子：
+app=nginx 选择所有Label中key为app，value为nginx的对象。
+env!=dev 选择所有Label中key为env，value不等于dev的对象。
+
+基于集合的Selector（Set-based）例子
+name in (redis-master, redis-slave) 选择所有Label中key为name，并且value为redis-master或redis-slave的对象。
+env not in (dev) 选择所有Label中key为env，并且value不为dev的对象。
+
+
+实际操作例子
+kubectl get pods,rs -l app=nginx
+kubectl get pods,rs -l name in (redis-master, redis-slave)
+************************************************************************************************************************************
+
+
+第四章 ConfigMap 和 secrect
+ConfigMap是一种API对象，用来将非加密数据保存到键值对中。可以用作环境变量、命令行参数或者存储卷中的配置文件。
+Command:
+
+Create的两种方式
+kubectl create configmap my-config --from-file=key1=1.text  --from-file=key2=2.text     #把value放在文件里面
+kubectl create configmap my-config --from-literal=key1=hello --from-literal=key2=world  #把value直接写
+
+
+获取该configmap
+kubectl describe configmap/my-config
+
+kubectl get configmap
+
+使用的时候
+```
+    env:
+    - name: KEY1
+      valueFrom:
+       configMapKeyRef:
+        name: my-config
+        key: key1
+    - name: KEY2
+      valueFrom:
+       configMapKeyRef:
+        name: my-config
+        key: key2
+```
+
+
+==========================================================================================================================================
+
+下面是 secrect 的制造过程
+
+echo -n "admin"    |base64   ====> YWRtaW4=
+echo -n "admin123" |base64   ====> YWRtaW4xMjM=
+
+```secret.yaml ==================> kubectl apply -f secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mysecret
+type: Opaque
+data:
+  username: YWRtaW4=
+  password: YWRtaW4xMjM=
+
+```
+
+kubectl get secret -owide
+
+如何使用:
+```
+      valueFrom:
+        secretKeyRef:
+          name: mysecret
+          key: username
+    - name: PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: mysecret
+          key: password
+```
+
+
+Secret有三种类型：
+1) Opaque : base64 编码格式的 Secret,用来存储password、密钥等，但数据也可以通过 base64 –decode解码得到原始数据，所有加密性很弱。
+2) kubernetes.io/dockerconfigjson :用来存储私有 docker registry 的认证信息
+3) Service Account :用来访问 Kubernetes API,由 Kubernetes 自动创建，并且会自动挂载到Pod的/run/secrets/kubernetes.io/serviceaccount 目录中
+
+
+
+
+
+
+
+
+
+
+第五章 Namespace
+在一个Kubernetes集群中可以拥有多个命名空间，它们在逻辑上彼此隔离。
+kubectl create namespace test123
+kubectl delete namespaces test123
+kubectl get namespace -owide
+
+
+
+
+
+第六章 Service
+
+Service可以看作是一组提供相同服务的Pod对外的访问接口。借助Service，应用可以方便地实现服务发现和负载均衡。
+
+
+Service的类型
+1) ClusterIP。默认值。给这个Service分配一个Cluster IP，它是Kubernetes系统自动分配的虚拟IP，因此只能在集群内部访问。
+2) NodePort。将Service通过指定的Node上的端口暴露给外部。通过此方法，访问任意一个NodeIP:nodePort都将路由到ClusterIP，从而成功获得该服务。
+3) LoadBalancer。在 NodePort 的基础上，借助 cloud provider 创建一个外部的负载均衡器，并将请求转发到 <NodeIP>:NodePort。此模式只能在云服务器（AWS等）上使用。
+4) ExternalName。将服务通过 DNS CNAME 记录方式转发到指定的域名（通过 spec.externlName 设定）。需要 kube-dns 版本在 1.7 以上。
+
+
+简述Kubernetes Service分发后端的策略
+Service负载分发的策略有：RoundRobin和SessionAffinity
+RoundRobin：默认为轮询模式，即轮询将请求转发到后端的各个Pod上。
+SessionAffinity：基于客户端IP地址进行会话保持的模式，即第1次将某个客户端发起的请求转发到后端的某个Pod上，之后从相同的客户端发起的请求都将被转发到后端相同的Pod上。
+
+
+
+第七章 Deployment
+Deployment对象，是用于部署应用的对象，它是K8S中最常用的一个对象，它为ReplicaSet和Pod的创建提供了一种声明式的定义方法，从而无需手动创建RS和pod 对象，使用Deployment而不直接创建RS是因为Deployment对象拥有许多RS没有的特性，如滚动升级和回滚等。
+
+
+
+简述Kubernetes deployment升级策略
+在Deployment的定义中，可以通过spec.strategy指定Pod更新的策略，目前支持两种策略：Recreate（重建）和RollingUpdate（滚动更新），默认值为RollingUpdate。
+1, Recreate     ：设置spec.strategy.type=Recreate，             会先杀掉所有正在运行的Pod，然后创建新的Pod。
+2, RollingUpdate：设置spec.strategy.type=RollingUpdate，        表示Deployment会以滚动更新的方式来逐个更新Pod。
+
+
+
+
+
+
+第八章 Ingress
+
+ingress包含量大组件：ingress和 ingress Controller:
+
+Ingress解决的是新的服务加入后，域名和服务的对应问题，基本上是一个ingress的对象，通过yaml进行创建和更新进行加载。
+Ingress Controller是将Ingress这种变化生成一段Nginx的配置，然后将这个配置通过Kubernetes API写到Nginx的Pod中，然后reload.（注意：写入 nginx.conf 的不是service的地址，而是service backend 的 pod 的地址，避免在 service 在增加一层负载均衡转发）
+
+
+
+
+
+
+第九章 常规
+
+简述Kubernetes镜像的下载策略
+Kubernetes的镜像下载策略有三种：Always、Never、IFNotPresent。
+Always：镜像标签为latest时，总是从指定的仓库中获取镜像。
+Never：禁止从仓库中下载镜像，也就是说只能使用本地镜像。
+IfNotPresent：仅当本地没有对应镜像时，才从目标仓库中下载。
+
+
+默认的镜像下载策略是：
+当镜像标签是latest时，默认策略是Always；
+当镜像标签是自定义时（也就是标签不是latest），那么默认策略是IfNotPresent。
+
+
+
+
+
+
+
+
+
+

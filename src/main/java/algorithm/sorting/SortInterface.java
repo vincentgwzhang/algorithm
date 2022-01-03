@@ -7,15 +7,18 @@ import org.junit.Test;
 
 public abstract class SortInterface {
 
+	private int count = 0;
+
 	@Rule
 	public RepeatRule repeatRule = new RepeatRule();
 
 	@Test
-	@Repeat(16)
+	@Repeat(1)
 	public void testDemo() {
+		count ++;
 		long start = System.currentTimeMillis();
 		for(int index = 0; index < 1; index++) {
-			int ARRAY_SIZE = 64;
+			int ARRAY_SIZE = 16;
 			int[] intArray = new int[ARRAY_SIZE];
 			for(int g_loop = 0; g_loop < ARRAY_SIZE; g_loop++) {
 				intArray[g_loop] = (int)(Math.random()*100);
@@ -34,7 +37,7 @@ public abstract class SortInterface {
 			//System.out.println("the [" + index + "]th round complete");
 		}
 		long end = System.currentTimeMillis();
-		System.out.println("Run time:" + (end - start));
+		System.out.println("Run time:" + count);
 	}
 	
 	

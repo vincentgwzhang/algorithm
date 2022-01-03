@@ -1,34 +1,31 @@
 package algorithm.sorting;
 
-import java.util.Arrays;
-
-import org.junit.Test;
-
 /**
  * 
  * 基数排序
  *
  */
-public class RadixSort {
+public class RadixSort extends SortInterface {
 
-	private void coreAlgorithm(int[] arr) {
-		int[][] bucket = new int[10][arr.length];
+	@Override
+	public void coreAlorithm(int[] intArray) {
+		int[][] bucket = new int[10][intArray.length];
 
 		int[] bucketElementCounts = new int[10];
 
 		int max = Integer.MIN_VALUE;
-		for(int i = 1; i < arr.length; i++) {
-			if(arr[i] > max) {
-				max = arr[i];
+		for(int i = 1; i < intArray.length; i++) {
+			if(intArray[i] > max) {
+				max = intArray[i];
 			}
 		}
 		
 		int maxLength = (max + "").length();
 		
 		for(int i = 0; i < maxLength; i++) {
-			for (int j = 0; j < arr.length; j++) {
-				int digitOfElement = arr[j] / (int)Math.pow(10, i) % 10;
-				bucket[digitOfElement][bucketElementCounts[digitOfElement]] = arr[j];
+			for (int j = 0; j < intArray.length; j++) {
+				int digitOfElement = intArray[j] / (int)Math.pow(10, i) % 10;
+				bucket[digitOfElement][bucketElementCounts[digitOfElement]] = intArray[j];
 				bucketElementCounts[digitOfElement] = bucketElementCounts[digitOfElement] + 1;
 			}
 
@@ -36,19 +33,12 @@ public class RadixSort {
 			for (int k = 0; k < bucket.length; k++) {
 				if (bucketElementCounts[k] != 0) {
 					for (int loop = 0; loop < bucketElementCounts[k]; loop++) {
-						arr[index++] = bucket[k][loop];
+						intArray[index++] = bucket[k][loop];
+						bucket[k][loop] = 0;
 					}
 				}
 				bucketElementCounts[k] = 0;
 			}	
 		}
 	}
-
-	@Test
-	public void test() {
-		int[] arr = new int[] { 53, 3, 542, 748, 14, 214 };
-		coreAlgorithm(arr);
-		System.out.println(Arrays.toString(arr));
-	}
-
 }

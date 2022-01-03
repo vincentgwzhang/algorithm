@@ -32,8 +32,7 @@ public class DibakdShellSort extends SortInterface {
 
     public void coreAlorithm(int[] arr) {
         int temp = 0;
-        int gap = arr.length;
-        for (gap = gap / 2; gap > 0; gap = gap / 2) {
+        for (int gap = arr.length / 2; gap > 0; gap = gap / 2) {
             for (int i = gap; i < arr.length; i++) {
                 for (int j = i - gap; j >= 0; j = j - gap) {
 
