@@ -131,8 +131,10 @@ Create POD 的流程
 1, 客户端提交Pod的配置信息（可以是yaml文件定义的信息）到kube-apiserver。
 2, Apiserver收到指令后，通知给controller-manager创建一个资源对象。
 3, Controller-manager通过api-server将Pod的配置信息存储到etcd数据中心中。
-4, Kube-scheduler检测到Pod信息会开始调度预选，会先过滤掉不符合Pod资源配置要求的节点，然后开始调度调优，主要是挑选出更适合运行Pod的节点，然后将Pod的资源配置单发送到Node节点上的kubelet组件上。
-5, Kubelet根据scheduler发来的资源配置单运行Pod，运行成功后，将Pod的运行信息返回给scheduler，scheduler将返回的Pod运行状况的信息存储到etcd数据中心。
+4, Kube-scheduler检测到Pod信息会开始调度预选，会先过滤掉不符合Pod资源配置要求的节点，然后开始调度调优，
+   主要是挑选出更适合运行Pod的节点，然后将Pod的资源配置单发送到Node节点上的kubelet组件上。
+5, Kubelet根据scheduler发来的资源配置单运行Pod，运行成功后，
+   将Pod的运行信息返回给scheduler，scheduler将返回的Pod运行状况的信息存储到etcd数据中心。
 
 
 1, yaml -> kube-apiserver
@@ -180,6 +182,8 @@ env not in (dev) 选择所有Label中key为env，并且value不为dev的对象�
 实际操作例子
 kubectl get pods,rs -l app=nginx
 kubectl get pods,rs -l name in (redis-master, redis-slave)
+kubectl get pods -l environment=production,tier=frontend
+kubectl get pods -l 'environment in (production),tier in (frontend)'
 ************************************************************************************************************************************
 
 
@@ -334,9 +338,15 @@ IfNotPresent：仅当本地没有对应镜像时，才从目标仓库中下载�
 
 
 
+Common command:
 
+kubectl scale deployments/XXXXXXXXX --replicas=0
+kubectl delete job XXXXXXXXXX
 
+kubectl logs -f fwefwefewf --tail=40 | jq .message
+kubectl port-forward service/fwfewfew 9999:8080
 
+kubectl exec -it nginx-pod-xxxxxx /bin/bash
 
 
 
