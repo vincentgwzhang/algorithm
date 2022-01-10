@@ -20,6 +20,7 @@ git rebase --abort
 
 
 git commit -amend 只能修改 commit 的信息，不能修改其他文件
+能修改吗?
 
 
 git rebase 其实是相当与
