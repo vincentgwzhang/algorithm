@@ -1,0 +1,11 @@
+String 是 unmutable 的
+
+String a = "a";
+String b = "a";
+System.out.println(a == b);// 结果是true，因为a,b变量都指向了运行时常量池中的”a”；所以两者当然相等
+
+
+String a = new String("a");
+String b = new String("a");
+System.out.println(a == b); // new String 创建了两个新对象，两个对象地址肯定不相等，这个时候的值“a”，就不是运行时常量池的“a”了，而是堆上的“a”
+

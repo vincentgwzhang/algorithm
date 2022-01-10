@@ -347,6 +347,3 @@ kubectl logs -f fwefwefewf --tail=40 | jq .message
 kubectl port-forward service/fwfewfew 9999:8080
 
 kubectl exec -it nginx-pod-xxxxxx /bin/bash
-
-
-

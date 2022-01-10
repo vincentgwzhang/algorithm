@@ -26,7 +26,37 @@ Hibernate中transient、persistent、detached对象三者之间有什么区别�
 调用persist() / save()方法，将transient对象变成persistent对象。
 
 
+Java JPA 只是一个规范，通常用 Hibernate / Mybatis 去实现数据持久性
 
 
+******************************************************************************************************
+GenerationType, JPA提供的四种标准用法为: TABLE,SEQUENCE,IDENTITY,AUTO.
+
+TABLE：使用一个特定的数据库表格来保存主键。
+SEQUENCE：根据底层数据库的序列来生成主键，条件是数据库支持序列。
+IDENTITY：主键由数据库自动生成（主要是自动增长型）
+AUTO：主键由程序控制。
+
+@Id
+@GeneratedValue(strategy = GenerationType.AUTO)
+private int deskId;
+******************************************************************************************************
 
 
+@ManyToOne(fetch = FetchType.LAZY)
+@JoinColumn(name="ih_ihs_id", nullable=false)
+private ImportHistorySummaryEntity importHistorySummary;/////////////////// 注意了，这两个刚好关联
+
+@ElementCollection(fetch= FetchType.LAZY)
+@OneToMany(mappedBy="importHistorySummary", fetch= FetchType.LAZY)
+private Set<ImportHistoryEntity> importHistoryEntities;//////////////////// 注意了，这两个刚好关联
+
+@OneToOne
+@JoinColumn(name="ipc_ip_id", nullable=false, unique=true)
+private ImportProductEntity importProduct;
+
+@ManyToMany
+@JoinTable(name="menu_item_to_import_product",
+        joinColumns=@JoinColumn(name="mitip_mi_id", referencedColumnName="mi_id"),
+        inverseJoinColumns=@JoinColumn(name="mitip_ip_id", referencedColumnName="ip_id"))
+private List<ImportProductEntity> importProducts;

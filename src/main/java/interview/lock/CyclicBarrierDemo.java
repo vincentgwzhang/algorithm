@@ -21,7 +21,7 @@ public class CyclicBarrierDemo {
 			System.out.println("=================end");
 		});
 
-		for (int i = 0; i < 6; i++) {
+		for (int i = 0; i < 3; i++) {
 			new Thread(() -> {
 				try {
 					System.out.println("I am thread " + Thread.currentThread().getName() + ", doing anything, start");
