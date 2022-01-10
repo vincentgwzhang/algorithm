@@ -189,10 +189,10 @@ Docker 网络通讯
 1, 容器与容器之间
 docker run --name tomcat --net=none/container/host -d tomcat:v1
 
---net=none 没有网络
---net=host 直接访问，不需要 -p 参数，因为此时跟主机直接分享网络端口
---net=bridge 桥接方式（就是用端口桥接，子网络那种）
---net=container 使用其他容器的网络栈
+--net=none           没有网络
+--net=host           直接使用宿主机的 IP 和端口
+--net=bridge         桥接方式：为每一个容器分配，设置 IP, 并将容器链接到一个叫 docker 的虚拟网桥，也是默认的
+--net=container      新创建的容器和一个指定的容器共享 IP，端口
 
 查看本身所有container 的连接方式
 docker network ls
@@ -323,3 +323,42 @@ ENTRYPOINT command param1 param2 shell中执行            ; 这个叫 shell 格
 ===========================================================================================
 
 Avoid docker images
+
+
+
+当你输入 ipconfig 的时候，
+
+wlo1: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+inet 192.168.1.124  netmask 255.255.255.0  broadcast 192.168.1.255
+inet6 fe80::2582:24c8:61bd:b502  prefixlen 64  scopeid 0x20<link>
+ether 5c:61:99:4d:f9:8f  txqueuelen 1000  (Ethernet)
+RX packets 717480  bytes 676878742 (676.8 MB)
+RX errors 0  dropped 334  overruns 0  frame 0
+TX packets 903748  bytes 776600737 (776.6 MB)
+TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+上面是 linux 数组机的地址
+
+===========================================================================================
+
+lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
+inet 127.0.0.1  netmask 255.0.0.0
+inet6 ::1  prefixlen 128  scopeid 0x10<host>
+loop  txqueuelen 1000  (Local Loopback)
+RX packets 161221  bytes 9618858 (9.6 MB)
+RX errors 0  dropped 0  overruns 0  frame 0
+TX packets 161221  bytes 9618858 (9.6 MB)
+TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+本地回环链路
+
+===========================================================================================
+
+
+docker0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
+inet 172.17.0.1  netmask 255.255.0.0  broadcast 172.17.255.255
+ether 02:42:e0:ba:b9:19  txqueuelen 0  (Ethernet)
+RX packets 0  bytes 0 (0.0 B)
+RX errors 0  dropped 0  overruns 0  frame 0
+TX packets 0  bytes 0 (0.0 B)
+TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0

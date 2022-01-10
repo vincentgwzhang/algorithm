@@ -19,6 +19,9 @@ git rebase --continue
 git rebase --abort
 
 
+git commit -amend 只能修改 commit 的信息，不能修改其他文件
+
+
 git rebase 其实是相当与
 1, 暂时撤销我所有的改变
 2, 重新把原本的branch 的补丁打上
