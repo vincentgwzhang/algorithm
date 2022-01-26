@@ -1,0 +1,20 @@
+什么是 Dependency Injection
+
+dependency injection is a technique in which an object receives other objects that it depends on, called dependencies.
+
+Typically, the receiving object is called a client and the passed-in ('injected') object is called a service.
+
+The code that passes the service to the client is called the injector.
+
+关键：：：：
+IOC is a concept，DI is implementation
+=================================================================================================================================================
+
+
+
+Java中的异常分为两大类：
+1.Checked Exception（非Runtime Exception）
+2.Unchecked Exception（Runtime Exception）
+
+
+Checked Exception 检查了的异常发生在编译阶段，必须要使用try…catch（或者throws）否则编译不通过。

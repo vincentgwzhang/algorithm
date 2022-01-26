@@ -347,3 +347,8 @@ kubectl logs -f fwefwefewf --tail=40 | jq .message
 kubectl port-forward service/fwfewfew 9999:8080
 
 kubectl exec -it nginx-pod-xxxxxx /bin/bash
+
+
+
+kube-proxy支持三种代理模式: 用户空间，iptables和IPVS；它们各自的操作略有不同。
+类型为ClusterIP的service，这个service有一个Cluster-IP，其实就一个VIP。 具体实现原理依靠kubeproxy组件，通过iptables或是ipvs实现。

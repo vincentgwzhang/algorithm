@@ -39,3 +39,10 @@ Cache-Control: No-Store
 Cache-Control: Public
 
 Cache-Control: Private
+
+====================================================================================
+首先从继承方面来说，Error和Exception都是Throwable的子类。
+
+
+Error类：就是程序运行时候抛出的最严重级别的错误了，如VirtualMachineError，ThreadDeath。
+抛出了Error的程序从Java设计的角度来讲，程序基本不可以通过后续代码修复，从而理应终止。

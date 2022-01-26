@@ -8,10 +8,11 @@ public class SpinLockDemo2 {
 
 	AtomicReference<Integer> value = new AtomicReference<>();
 
-	public void set(int expected, int updated) {
+	public void set(int expected, int updated, int version) {
 		while (!value.compareAndSet(expected, updated)) {
 			try {
-				TimeUnit.SECONDS.sleep(new Random().nextLong(3));
+				System.out.println(Thread.currentThread().getName() + " :: " + version + " :: update from" + expected + " to " + updated);
+				TimeUnit.SECONDS.sleep(new Random().nextLong(3) + 1);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -24,15 +25,13 @@ public class SpinLockDemo2 {
 
 		new Thread(() -> {
 			for (int index = 0; index < 10; index ++) {
-				System.out.println("AAA start, change 1 -> 2");
-				demo.set(1, 2);
+				demo.set(1, 2, index);
 			}
 		},"AAA").start();
 
 		new Thread(() -> {
 			for (int index = 0; index < 10; index ++) {
-				System.out.println("BBB start, change 2 -> 1");
-				demo.set(2, 1);
+				demo.set(2, 1, index);
 			}
 		},"BBB").start();
 
